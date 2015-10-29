@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.7" icons="true">  
+  <object id="1" language="java" name="SayWhat.mana" project="OthelloGUI" file="/OthelloGUI/src/SayWhat/mana.java" 
+    binary="false" label="mana" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="420" y="0"/>    
+    <execution id="2">      
+      <position height="497" width="55" x="5" y="99"/>    
+    </execution>  
+  </object>  
+  <object id="5" language="java" name="SayWhat.GUIllermo" project="OthelloGUI" 
+    file="/OthelloGUI/src/SayWhat/GUIllermo.java" binary="false" label="guIllermo" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="420" y="0"/>    
+    <execution id="4">      
+      <position height="455" width="78" x="64" y="120"/>    
+    </execution>  
+  </object>  
+  <object id="8" language="java" name="SayWhat.Nev_megadas" project="OthelloGUI" 
+    file="/OthelloGUI/src/SayWhat/Nev_megadas.java" binary="false" label="nev_megadas" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="420" y="0"/>    
+    <execution id="7">      
+      <position height="413" width="104" x="146" y="141"/>    
+    </execution>  
+  </object>  
+  <object id="11" language="java" name="SayWhat.Ujjatek" project="OthelloGUI" 
+    file="/OthelloGUI/src/SayWhat/Ujjatek.java" binary="false" label="ujjatek" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="420" y="0"/>    
+    <execution id="10">      
+      <position height="350" width="62" x="363" y="183"/>    
+    </execution>  
+  </object>  
+  <object id="14" language="java" name="SayWhat.Ujjatek" project="OthelloGUI" 
+    file="/OthelloGUI/src/SayWhat/Ujjatek.java" binary="false" label="jatek()" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="13">      
+      <position height="308" width="62" x="429" y="204"/>    
+    </execution>  
+  </object>  
+  <object id="17" language="java" name="SayWhat.Ujjatek.KorongListener" project="OthelloGUI" 
+    file="/OthelloGUI/src/SayWhat/Ujjatek.java" binary="false" label="korongListener" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="549" y="0"/>    
+    <execution id="16">      
+      <position height="266" width="111" x="495" y="225"/>    
+    </execution>  
+  </object>  
+  <object id="22" language="java" name="SayWhat.Ujjatek" project="OthelloGUI" 
+    file="/OthelloGUI/src/SayWhat/Ujjatek.java" binary="false" label="sotetLep()" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="19">      
+      <position height="63" width="62" x="610" y="246"/>    
+    </execution>  
+  </object>  
+  <object id="25" language="java" name="SayWhat.Ujjatek" project="OthelloGUI" 
+    file="/OthelloGUI/src/SayWhat/Ujjatek.java" binary="false" label="vilagosLep()" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="21">      
+      <position height="63" width="67" x="676" y="407"/>    
+    </execution>  
+  </object>  
+  <object id="28" language="java" name="SayWhat.Asztal" project="OthelloGUI" file="/OthelloGUI/src/SayWhat/Asztal.java" 
+    binary="false" label="sotetForgat()" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="24">      
+      <position height="21" width="70" x="747" y="267"/>    
+    </execution>  
+  </object>  
+  <object id="29" language="java" name="SayWhat.Asztal" project="OthelloGUI" file="/OthelloGUI/src/SayWhat/Asztal.java" 
+    binary="false" label="vilagosForgat()" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="27">      
+      <position height="21" width="80" x="821" y="428"/>    
+    </execution>  
+  </object>  
+  <message id="3" operation="GUIllermo()">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="6" operation="Nev_megadas()">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="7"/>  
+  </message>  
+  <message id="9" operation="Ujjatek()">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="10"/>  
+  </message>  
+  <message id="12" operation="jatek():void">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="13"/>  
+  </message>  
+  <message id="15" operation="KorongListener()">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="16"/>  
+  </message>  
+  <message id="18" operation="sotetLep(int,int):int">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="19"/>  
+  </message>  
+  <message id="20" operation="vilagosLep(int,int):int">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="21"/>  
+  </message>  
+  <message id="23" operation="sotetForgat(int,int):int">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="24"/>  
+  </message>  
+  <message id="26" operation="vilagosForgat(int,int):int">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="27"/>  
+  </message>
+</sequence-diagram>
