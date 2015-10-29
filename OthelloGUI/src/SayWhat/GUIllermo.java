@@ -18,8 +18,10 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 
 	private static final long serialVersionUID = 1L;
 	//3 gombból áll, "Új játék", "Toplista", "Kilépés"
-	private JButton newGame = new JButton("Új Játék");
+	private JButton newGame = new JButton("Ember ember ellen");
 	private JButton highScores = new JButton("Toplista");
+	private JButton newGameHumanVSComputer = new JButton("Ember a gép ellen");
+	private JButton newGameComputerVSComputer = new JButton("Gép a gép ellen");
 	private JButton exit = new JButton("Kilépés");
 	
 	public  class BtnListener implements ActionListener{//buttonactionlistener, mindhárom gombra, stringet kap paraméterként, ezek alapján hívja a különbözõ frameket
@@ -58,34 +60,38 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 		
 		
 		
-		newGame.setBounds(550, 100, 200, 100);
-		highScores.setBounds(550, 250, 200, 100);
-		exit.setBounds(550,400, 200, 100);
+		newGame.setBounds(450, 100, 400, 100);
+		newGameHumanVSComputer.setBounds(450, 225, 400, 100);
+		newGameComputerVSComputer.setBounds(450, 350, 400, 100);
+		exit.setBounds(550, 475, 200, 100);
 		
 		newGame.setBorder(null);
-		highScores.setBorder(null);
+		newGameHumanVSComputer.setBorder(null);
+		newGameComputerVSComputer.setBorder(null);
 		exit.setBorder(null);
 		
 		newGame.setContentAreaFilled(false);
-		highScores.setContentAreaFilled(false);
+		newGameHumanVSComputer.setContentAreaFilled(false);
+		newGameComputerVSComputer.setContentAreaFilled(false);
 		exit.setContentAreaFilled(false);
 		
 		newGame.setFont(new Font("Serif", Font.TRUETYPE_FONT, 40));
-		highScores.setFont(new Font("Serif", Font.TRUETYPE_FONT, 40));
+		newGameHumanVSComputer.setFont(new Font("Serif", Font.TRUETYPE_FONT, 40));
+		newGameComputerVSComputer.setFont(new Font("Serif", Font.TRUETYPE_FONT, 40));
 		exit.setFont(new Font("Serif", Font.TRUETYPE_FONT, 40));
 		
 		newGame.setForeground(Color.cyan);
-		highScores.setForeground(Color.cyan);
+		newGameHumanVSComputer.setForeground(Color.cyan);
+		newGameComputerVSComputer.setForeground(Color.cyan);
 		exit.setForeground(Color.cyan);
 		
 		this.add(newGame);
-		this.add(highScores);
+		this.add(newGameHumanVSComputer);
+		this.add(newGameComputerVSComputer);
 		this.add(exit);
 		
 		BtnListener newg = new BtnListener("ujjatek");
 		newGame.addActionListener(newg);
-		BtnListener topl = new BtnListener("toplista");
-		highScores.addActionListener(topl);
 		BtnListener egz = new BtnListener("exit");
 		exit.addActionListener(egz);
 		
