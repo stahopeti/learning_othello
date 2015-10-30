@@ -30,7 +30,13 @@ import javax.swing.border.LineBorder;
 
 public class Ujjatek extends JFrame{
 
-
+	List<String> lepesSorozat=new ArrayList<String>();
+	String elozo="root";
+	Tree<String> lepesSorozatTree=new Tree<String>("root");
+	
+	TreeElement elozoElement=new TreeElement("root");
+	Tree<TreeElement> lepesSorozatTree2=new Tree<TreeElement>(elozoElement);
+	
 	private static final long serialVersionUID = 1L;
 
 	//Asztal.
@@ -96,6 +102,18 @@ public class Ujjatek extends JFrame{
 			if(korszamlalo%2==0)//Globális változó, ha páros, sotetLep, ha páratlan vilagosLep.
 				try {
 					lepett_e = sotetLep(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
+					if (lepett_e>0){
+						String part1=Integer.toString(x);
+						String part2=Integer.toString(y);
+						lepesSorozat.add(part1+part2);
+						lepesSorozatTree.addLeaf(elozo,part1+part2);
+						
+						TreeElement aktualis=new TreeElement(part1+part2);
+						lepesSorozatTree2.addLeaf(elozoElement,aktualis);
+						elozoElement=aktualis;
+						
+						
+					}
 				} catch (IOException e1) {
 				
 					e1.printStackTrace();
@@ -117,14 +135,33 @@ public class Ujjatek extends JFrame{
 				
 				try {
 					lepett_e = vilagosLep(a,b,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
+					if (lepett_e>0){
+						String part1=Integer.toString(a);
+						String part2=Integer.toString(b);
+						lepesSorozat.add(part1+part2);
+						lepesSorozatTree.addLeaf(elozo,part1+part2);
+						
+						TreeElement aktualis=new TreeElement(part1+part2);
+						lepesSorozatTree2.addLeaf(elozoElement,aktualis);
+						elozoElement=aktualis;
+					}
 				} catch (IOException e1) {
 				
 					e1.printStackTrace();
 				}
 			}
 			System.out.println("lepes: " + korszamlalo%2 + "lepett_e: " + lepett_e);//teszt kimenet a konzolra
-			if(lepett_e>0) korszamlalo++;//ha volt lépés növelje a korszámlálót
+			if(lepett_e>0) {
+				korszamlalo++;//ha volt lépés növelje a korszámlálót
+				
+			}
 			else{rossz_lepes.setText("Rossz Lépés!");}//ha nem volt írja ki, hogy "Rossz lépés!".
+			
+			System.out.println("Lépések sorozata:");
+			for (int i=0;i<lepesSorozat.size();i++){
+				System.out.println(lepesSorozat.get(i));
+			}
+			System.out.println(lepesSorozatTree2.toString());
 			
 			System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
 			
