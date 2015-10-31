@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -32,9 +31,9 @@ import javax.swing.border.LineBorder;
 public class Ujjatek extends JFrame{
 
 	List<String> lepesSorozat=new ArrayList<String>();
-	
-	TreeElement elozoElement=new TreeElement("root");
-	Tree<TreeElement> lepesSorozatTree;
+	TreeNode Root=new TreeNode("root");
+	TreeNode elozoElement=Root;
+
 	
 	private static final long serialVersionUID = 1L;
 
@@ -102,13 +101,26 @@ public class Ujjatek extends JFrame{
 				try {
 					lepett_e = sotetLep(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 					if (lepett_e>0){
+						boolean beszur=true;
 						String part1=Integer.toString(x);
 						String part2=Integer.toString(y);
-						lepesSorozat.add(part1+part2);
+						lepesSorozat.add(part1+part2);                       //Pozíció Stringgé alakítása
 						
-						TreeElement aktualis=new TreeElement(part1+part2);
-						lepesSorozatTree.addLeaf(elozoElement,aktualis);
-						elozoElement=aktualis;								
+						TreeNode aktualis=new TreeNode(part1+part2);   //létrehozom a beszúrandó elemet
+					    
+						TreeNode[] gyerekek=elozoElement.getChildren();   //az elõzõ elemnek megnézem a gyerekeit
+						//Lehet h az az elem már korábban be volt szúrva, tehát lehetnek gyerekei, az is lehet h friss ez az ág és nincs is még gyereke.
+						for (TreeNode i : gyerekek){							//megnézem, hogy a szülõnek van-e már ilyen gyereke
+					    	System.out.println("ittvagyok!\n");
+							if (i.getPosition().equals(aktualis.getPosition())){
+					    		elozoElement=aktualis;                          //ha van már ilyen gyereke, akkor nem kell beszúrnom
+					    		beszur=false;
+					    	}	    	
+					    }
+						if (beszur){                                            //ha még nem volt ilyen gyerek, akkor beszúrás gyereknek
+							elozoElement.add(aktualis);
+							elozoElement=aktualis;	
+						}																		
 					}
 				} catch (IOException e1) {
 				
@@ -133,15 +145,28 @@ public class Ujjatek extends JFrame{
 				try {
 					lepett_e = vilagosLep(a,b,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 					if (lepett_e>0){
+						boolean beszur=true;
 						String part1=Integer.toString(a);
 						String part2=Integer.toString(b);
-						lepesSorozat.add(part1+part2);
+						lepesSorozat.add(part1+part2);                       //Pozíció Stringgé alakítása
 						
-						TreeElement aktualis=new TreeElement(part1+part2);
-						lepesSorozatTree.addLeaf(elozoElement,aktualis);
-						elozoElement=aktualis;
+						TreeNode aktualis=new TreeNode(part1+part2);   //létrehozom a beszúrandó elemet
+					    
+						TreeNode[] gyerekek=elozoElement.getChildren();   //az elõzõ elemnek megnézem a gyerekeit
+						//Lehet h az az elem már korábban be volt szúrva, tehát lehetnek gyerekei, az is lehet h friss ez az ág és nincs is még gyereke.
+						for (TreeNode i : gyerekek){							//megnézem, hogy a szülõnek van-e már ilyen gyereke
+					    	System.out.println("ittvagyok!\n");
+							if (i.getPosition().equals(aktualis.getPosition())){
+					    		elozoElement=aktualis;                          //ha van már ilyen gyereke, akkor nem kell beszúrnom
+					    		beszur=false;
+					    	}	    	
+					    }
+						if (beszur){                                            //ha még nem volt ilyen gyerek, akkor beszúrás gyereknek
+							elozoElement.add(aktualis);
+							elozoElement=aktualis;	
+						}					
 					}
-				} catch (IOException e1) {
+				}catch (IOException e1) {
 				
 					e1.printStackTrace();
 				}
@@ -160,7 +185,7 @@ public class Ujjatek extends JFrame{
 			for (int i=0;i<lepesSorozat.size();i++){
 				System.out.println(lepesSorozat.get(i));
 			}
-			System.out.println(lepesSorozatTree.toString());
+			
 					
 			System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
 			
@@ -208,7 +233,6 @@ public class Ujjatek extends JFrame{
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	public Ujjatek(){
 	//Frame konstruktor. A frame mérete 1280x720, neve "Uj_jatek".
 		super("Uj_jatek");
@@ -319,33 +343,49 @@ public class Ujjatek extends JFrame{
 		}
 		
 		//Adatbázis betöltése
-		Tree<TreeElement> serTree = null;
+		TreeNode serTreeNode = null;
 	    try
 	    {
 	       FileInputStream fileIn = new FileInputStream("Tree.dat");
 	       ObjectInputStream in = new ObjectInputStream(fileIn);
-	       serTree = (Tree<TreeElement>) in.readObject();
+	       serTreeNode = (TreeNode) in.readObject();
 	       in.close();
 	       fileIn.close();
-		   lepesSorozatTree=serTree;
-		   elozoElement=lepesSorozatTree.getHead();
+		   Root=serTreeNode;
+		   elozoElement=Root;
+		   System.out.println("Sikerült az adatbázis betöltése");
+		   
+		   
+		   //Tesztelgetéshez..  
+			TreeNode[] TestRoot=Root.getChildren();
+			TreeNode[] TestElsoGyerekGyereke=Root.getChildren()[1].getChildren();
+			TreeNode asd=TestElsoGyerekGyereke[0];
+			TreeNode[] wtf=asd.getChildren();
+			
+			System.out.println("Root Gyerekei:");
+			for (int i=0;i<TestRoot.length;i++){
+				System.out.println(TestRoot[i].getPosition());
+			}
+			System.out.println("Most épp a Root 2 gyerekének gyerekei:");
+			for (int i=0;i<TestElsoGyerekGyereke.length;i++){
+				System.out.println(TestElsoGyerekGyereke[i].getPosition());
+			}
+			System.out.println("Most épp a Root 2 gyerekének az elsõ gyerekének a gyerekei:");
+			for (int i=0;i<wtf.length;i++){
+				System.out.println(wtf[i].getPosition());
+			}
+			
 	    }catch(IOException i)
 	    {
 	       i.printStackTrace();
-	       lepesSorozatTree=new Tree<TreeElement>(elozoElement);
+		   System.out.println("Nem sikerült az adatbázis betöltése");
 	    }catch(ClassNotFoundException c)
 	    {
 	       System.out.println("Tree class not found");
 	       c.printStackTrace();
 	    }
 		
-	    Collection<TreeElement> asd=lepesSorozatTree.getSuccessors(lepesSorozatTree.getHead());
-	    
-	    System.out.println("GYÖKÉRBÕL INDULÓ POZÍCIÓK:");
-	    for (TreeElement i : asd){
-	    	System.out.println(i.getPosition());	    	
-	    }
-		
+
 		
 	}
 	
@@ -465,10 +505,10 @@ public class Ujjatek extends JFrame{
 			try{
 				FileOutputStream fileOut = new FileOutputStream("Tree.dat");
 				ObjectOutputStream out = new ObjectOutputStream(fileOut);
-				out.writeObject(lepesSorozatTree);
+				out.writeObject(Root);
 				out.close();
 				fileOut.close();
-				System.out.printf("Serialized data is saved in /tmp/employee.ser");
+				System.out.printf("Serialized data is saved in Tree.dat");
 			}catch(IOException i){
 			    i.printStackTrace();
 			}
