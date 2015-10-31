@@ -26,9 +26,10 @@ import java.util.HashMap;
  * @param <T>
  *          Object's type in the tree.
  */
-public class Tree<T> {
+public class Tree<T> implements java.io.Serializable{
+	private static final long serialVersionUID = 1L;
 
-  private T head;
+private T head;
 
   private ArrayList<Tree<T>> leafs = new ArrayList<Tree<T>>();
 

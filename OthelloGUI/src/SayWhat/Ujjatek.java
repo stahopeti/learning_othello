@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -31,11 +32,9 @@ import javax.swing.border.LineBorder;
 public class Ujjatek extends JFrame{
 
 	List<String> lepesSorozat=new ArrayList<String>();
-	String elozo="root";
-	Tree<String> lepesSorozatTree=new Tree<String>("root");
 	
 	TreeElement elozoElement=new TreeElement("root");
-	Tree<TreeElement> lepesSorozatTree2=new Tree<TreeElement>(elozoElement);
+	Tree<TreeElement> lepesSorozatTree;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -106,13 +105,10 @@ public class Ujjatek extends JFrame{
 						String part1=Integer.toString(x);
 						String part2=Integer.toString(y);
 						lepesSorozat.add(part1+part2);
-						lepesSorozatTree.addLeaf(elozo,part1+part2);
 						
 						TreeElement aktualis=new TreeElement(part1+part2);
-						lepesSorozatTree2.addLeaf(elozoElement,aktualis);
-						elozoElement=aktualis;
-						
-						
+						lepesSorozatTree.addLeaf(elozoElement,aktualis);
+						elozoElement=aktualis;								
 					}
 				} catch (IOException e1) {
 				
@@ -126,6 +122,7 @@ public class Ujjatek extends JFrame{
 				for (int i=0;i<lehetsegesLepesek.size();i++){
 					System.out.println(lehetsegesLepesek.get(i));
 				}
+				
 				Random rand = new Random(); 
 				int randomValue = rand.nextInt(lehetsegesLepesek.size()); 
 				System.out.println("RANDOM"+randomValue);
@@ -139,10 +136,9 @@ public class Ujjatek extends JFrame{
 						String part1=Integer.toString(a);
 						String part2=Integer.toString(b);
 						lepesSorozat.add(part1+part2);
-						lepesSorozatTree.addLeaf(elozo,part1+part2);
 						
 						TreeElement aktualis=new TreeElement(part1+part2);
-						lepesSorozatTree2.addLeaf(elozoElement,aktualis);
+						lepesSorozatTree.addLeaf(elozoElement,aktualis);
 						elozoElement=aktualis;
 					}
 				} catch (IOException e1) {
@@ -157,12 +153,15 @@ public class Ujjatek extends JFrame{
 			}
 			else{rossz_lepes.setText("Rossz Lépés!");}//ha nem volt írja ki, hogy "Rossz lépés!".
 			
+			
+			
+			
 			System.out.println("Lépések sorozata:");
 			for (int i=0;i<lepesSorozat.size();i++){
 				System.out.println(lepesSorozat.get(i));
 			}
-			System.out.println(lepesSorozatTree2.toString());
-			
+			System.out.println(lepesSorozatTree.toString());
+					
 			System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
 			
 			}
@@ -208,6 +207,8 @@ public class Ujjatek extends JFrame{
 		return lepesek;
 	}
 	
+
+	@SuppressWarnings("unchecked")
 	public Ujjatek(){
 	//Frame konstruktor. A frame mérete 1280x720, neve "Uj_jatek".
 		super("Uj_jatek");
@@ -221,9 +222,6 @@ public class Ujjatek extends JFrame{
 			
 			System.out.print("Image doesnt exist");
 		}
-		
-		//palya
-		
 		
 		//palya
 		vissza.setLocation(1130,670);
@@ -271,10 +269,7 @@ public class Ujjatek extends JFrame{
 		fhr.setLocation(980, 0);
 		fekete.setLocation(200, 50);
 		feher.setLocation(980,50);
-		
-		
-		
-		
+			
 		//pálya felépítése
 		Border border = new LineBorder(Color.black, 1);
 		int sorban=425;
@@ -323,6 +318,35 @@ public class Ujjatek extends JFrame{
 			e.printStackTrace();
 		}
 		
+		//Adatbázis betöltése
+		Tree<TreeElement> serTree = null;
+	    try
+	    {
+	       FileInputStream fileIn = new FileInputStream("Tree.dat");
+	       ObjectInputStream in = new ObjectInputStream(fileIn);
+	       serTree = (Tree<TreeElement>) in.readObject();
+	       in.close();
+	       fileIn.close();
+		   lepesSorozatTree=serTree;
+		   elozoElement=lepesSorozatTree.getHead();
+	    }catch(IOException i)
+	    {
+	       i.printStackTrace();
+	       lepesSorozatTree=new Tree<TreeElement>(elozoElement);
+	    }catch(ClassNotFoundException c)
+	    {
+	       System.out.println("Tree class not found");
+	       c.printStackTrace();
+	    }
+		
+	    Collection<TreeElement> asd=lepesSorozatTree.getSuccessors(lepesSorozatTree.getHead());
+	    
+	    System.out.println("GYÖKÉRBÕL INDULÓ POZÍCIÓK:");
+	    for (TreeElement i : asd){
+	    	System.out.println(i.getPosition());	    	
+	    }
+		
+		
 	}
 	
 
@@ -340,6 +364,7 @@ public class Ujjatek extends JFrame{
 		}
 		return lepes_e;//intet ad vissza, ami alapján a KorongListener eldönti, volt-e lépés.
 	}
+	
 	
 	public int vilagosLep(int i, int j, boolean test) throws IOException{
 		int lepes_e;
@@ -392,7 +417,7 @@ public class Ujjatek extends JFrame{
 		
 	}
 	
-	@SuppressWarnings("resource")
+
 	public static TOPLIST deserializalas() {
 		TOPLIST temp = new TOPLIST();
 		
@@ -435,16 +460,28 @@ public class Ujjatek extends JFrame{
 		fhr.setText("Fehér Játékos: "+ gameh.hanyVilagos());
 		rossz_lepes.setText("");
 		
-		if(gameh.hanyUres()==0){//ha már nincs üres.
+		if(gameh.hanyUres()==0){            //ha már nincs üres.
 			
+			try{
+				FileOutputStream fileOut = new FileOutputStream("Tree.dat");
+				ObjectOutputStream out = new ObjectOutputStream(fileOut);
+				out.writeObject(lepesSorozatTree);
+				out.close();
+				fileOut.close();
+				System.out.printf("Serialized data is saved in /tmp/employee.ser");
+			}catch(IOException i){
+			    i.printStackTrace();
+			}
+				
+				
 			int allas = 0; // ha fekete nyert 0 ha fehér 1 ha döntetlen 2
-			
+				
 			//pontszám beállítása
 			feherSc = gameh.hanyVilagos();
 			feketeSc = gameh.hanySotet();
-			
+				
 			String nyertes = "Döntetlen";
-			
+				
 			if(feketeSc > feherSc) {//Ha sötétnek több pontja van.
 				
 				rossz_lepes.setText(fekete.getText()+ " nyert!"); 
