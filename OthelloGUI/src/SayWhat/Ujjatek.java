@@ -81,15 +81,13 @@ public class Ujjatek extends JFrame{
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int x=0,y=0;//ezeket adja tovább koordinátaként a sotetLep vagy vilagosLep függvénynek
+			int x=0,y=0;//ezeket adja tovább koordinátaként a sotetForgat vagy vilagosForgat függvénynek
 			int lepett_e=0;
 			System.out.println("Koronglistener\n");						
 			
 			for(int i=1;i<9;i++){
-				for(int j=1;j<9;j++){
-					
-					if(e.getSource()==tabla[i][j]){ //Megvizsgálja, a 2d gombtömb melyikére kattintottunk.
-						
+				for(int j=1;j<9;j++){				
+					if(e.getSource()==tabla[i][j]){ //Megvizsgálja, a 2d gombtömb melyikére kattintottunk.						
 						System.out.println("A lenyomott gomb: x:"+ (i)+" y:"+(j));//teszt kimenet konzolra
 						x=i; y=j;
 					}
@@ -104,14 +102,16 @@ public class Ujjatek extends JFrame{
 					
 					if (lehetsegesLepesek.size()==0){korszamlalo++;}	 //ha nincs hova lépni, akkor passzolni kell
 					else{
-						lepett_e = sotetLep(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
+						lepett_e = gameh.sotetForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 						if (lepett_e>0){
 							fabaSzur(x,y);
 							korszamlalo++;
+							update();//Update függvény frissíti a táblát.
+							System.out.println("updateolva");//tesztkimenet konzolra
+							gameh.asztalKiir();
 						}
 					}																						
-				} catch (IOException e1) {
-				
+				} catch (IOException e1) {		
 					e1.printStackTrace();
 				}
 			if(korszamlalo%2==1){
@@ -122,6 +122,7 @@ public class Ujjatek extends JFrame{
 				for (int i=0;i<lehetsegesLepesek.size();i++){
 					System.out.println(lehetsegesLepesek.get(i));
 				}
+				
 				if (lehetsegesLepesek.size()==0){korszamlalo++;}
 				else{
 					Random rand = new Random(); 
@@ -132,10 +133,13 @@ public class Ujjatek extends JFrame{
 					y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
 					
 					try {
-						lepett_e = vilagosLep(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
+						lepett_e = gameh.vilagosForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 						if (lepett_e>0){
 							fabaSzur(x,y);
 							korszamlalo++;
+							update();//Update függvény frissíti a táblát.
+							System.out.println("updateolva");//tesztkimenet konzolra
+							gameh.asztalKiir();
 						}
 					}catch (IOException e1) {
 					
@@ -147,9 +151,7 @@ public class Ujjatek extends JFrame{
 			if(lepett_e==0) {
 				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
 			}
-			
-			
-			
+								
 			
 			System.out.println("Lépések sorozata:");
 			for (int i=0;i<lepesSorozat.size();i++){
@@ -169,15 +171,10 @@ public class Ujjatek extends JFrame{
 		if(korszamlalo%2==0){       						       //külön fehér, külön fekete játékos esetén
 			for(int i=1;i<9;i++){                   		       //bevégigmegyek a tábla összes elemén (ezen lehet talán optimalizálni késõbb)
 				for(int j=1;j<9;j++){
-						try {
-							if (0<sotetLep(i,j,true)){             //megvizsgálom, hogy a lépés lehetséges-e
-								String part1=Integer.toString(i);
-								String part2=Integer.toString(j);
-								lepesek.add(part1+part2);          //belerakom a listába
-							}
-						} catch (IOException e1) {
-					
-							e1.printStackTrace();
+						if (0<gameh.sotetForgat(i,j,true)){             //megvizsgálom, hogy a lépés lehetséges-e
+							String part1=Integer.toString(i);
+							String part2=Integer.toString(j);
+							lepesek.add(part1+part2);          //belerakom a listába
 						}
 				}
 			}
@@ -185,15 +182,10 @@ public class Ujjatek extends JFrame{
 		if(korszamlalo%2==1){              							//ugyan az, mint fekete játékos esetén
 			for(int i=1;i<9;i++){
 				for(int j=1;j<9;j++){
-					try {
-						if (0<vilagosLep(i,j,true)){
-							String part1=Integer.toString(i);
-							String part2=Integer.toString(j);
-							lepesek.add(part1+part2);
-						}
-					} catch (IOException e1) {
-					
-						e1.printStackTrace();
+					if (0<gameh.vilagosForgat(i,j,true)){
+						String part1=Integer.toString(i);
+						String part2=Integer.toString(j);
+						lepesek.add(part1+part2);
 					}
 				}
 			}
@@ -214,7 +206,6 @@ public class Ujjatek extends JFrame{
 		
 		//Lehet h az az elem már korábban be volt szúrva, tehát lehetnek gyerekei, az is lehet h friss ez az ág és nincs is még gyereke.
 		for (TreeNode i : gyerekek){							//megnézem, hogy a szülõnek van-e már ilyen gyereke
-	    	System.out.println("ittvagyok!\n");
 			if (i.getPosition().equals(aktualis.getPosition())){
 	    		elozoElement=aktualis;                          //ha van már ilyen gyereke, akkor nem kell beszúrnom
 	    		beszur=false;
@@ -384,34 +375,9 @@ public class Ujjatek extends JFrame{
 	
 
 	
-	public int sotetLep(int i, int j, boolean test) throws IOException{
-		int lepes_e;
-		if (!test){
-			lepes_e = gameh.sotetForgat(i, j,test);	//az aktuáis korongra meghívja a forgató függvényt
-			gameh.asztalKiir();//tesztkimenet konzolra
-			update();//Update függvény frissíti a táblát.
-			System.out.println("updateolva");//tesztkimenet konzolra
-		}
-		else{
-			lepes_e = gameh.sotetForgat(i, j,test);	//az aktuáis korongra meghívja a forgató függvényt
-		}
-		return lepes_e;//intet ad vissza, ami alapján a KorongListener eldönti, volt-e lépés.
-	}
+
 	
 	
-	public int vilagosLep(int i, int j, boolean test) throws IOException{
-		int lepes_e;
-		if (!test){
-			lepes_e =gameh.vilagosForgat(i, j,test);//az aktuáis korongra meghívja a forgató függvényt
-			gameh.asztalKiir();//tesztkimenet konzolra
-			update();//Update függvény frissíti a táblát.
-			System.out.println("updateolva");//tesztkimenet konzolra
-		}
-		else{
-			lepes_e = gameh.vilagosForgat(i, j,test);	//az aktuáis korongra meghívja a forgató függvényt
-		}
-		return lepes_e;//intet ad vissza, ami alapján a KorongListener eldönti, volt-e lépés.
-	}
 	
 		
 	
@@ -493,20 +459,10 @@ public class Ujjatek extends JFrame{
 		fhr.setText("Fehér Játékos: "+ gameh.hanyVilagos());
 		rossz_lepes.setText("");
 		
+		TreeNode Last=elozoElement;
+		
 		if(gameh.hanyUres()==0){            //ha már nincs üres.
-			
-			try{
-				FileOutputStream fileOut = new FileOutputStream("Tree.dat");
-				ObjectOutputStream out = new ObjectOutputStream(fileOut);
-				out.writeObject(Root);
-				out.close();
-				fileOut.close();
-				System.out.printf("Serialized data is saved in Tree.dat");
-			}catch(IOException i){
-			    i.printStackTrace();
-			}
-				
-				
+											
 			int allas = 0; // ha fekete nyert 0 ha fehér 1 ha döntetlen 2
 				
 			//pontszám beállítása
@@ -515,27 +471,59 @@ public class Ujjatek extends JFrame{
 				
 			String nyertes = "Döntetlen";
 				
+			System.out.println("A játéknak vége!");
+			System.out.println("A játék végén: Lépések sorozata:");
+			for (int i=0;i<lepesSorozat.size();i++){
+				System.out.println(lepesSorozat.get(i));
+			}
+														
+			
 			if(feketeSc > feherSc) {//Ha sötétnek több pontja van.
 				
 				rossz_lepes.setText(fekete.getText()+ " nyert!"); 
 				allas = 0;
 				nyertes = fekete.getText();
+				
+				for (int i=0;i<lepesSorozat.size();i++){
+					elozoElement.incWinCount();
+					elozoElement.setWinRate();
+					elozoElement=elozoElement.getParent();
+				}
+				
+				
 			}
 			if(feketeSc < feherSc) {//Ha világosnak több pontja van.
 				rossz_lepes.setText(feher.getText()+ " nyert!");
 				allas = 1;
 				nyertes = feher.getText();
 				
+				for (int i=0;i<lepesSorozat.size();i++){
+					elozoElement.incLoseCount();
+					elozoElement.setWinRate();
+					elozoElement=elozoElement.getParent();
+				}
+				
 			}
 			if(feherSc==feketeSc) {rossz_lepes.setText("Döntetlen!"); allas = 2;}//Ha egyenlõ az állás
 			
 			System.out.println("fekete: "  + feketeSc + "feher: "+ feherSc);//teszt kimenet konzolra
-			 
-			 
-		      
+			    
+			System.out.println("utolsóelõtti node: "+ Last.getParent().getPosition() +  " Winrateje: " + Last.getParent().getWinRate());
+			System.out.println("utolsó node: "+ Last.getPosition() + " Winrateje: "+ Last.getWinRate());
 			
 			
 			
+			
+			try{																		//szerializálom a Tree-t
+				FileOutputStream fileOut = new FileOutputStream("Tree.dat");
+				ObjectOutputStream out = new ObjectOutputStream(fileOut);
+				out.writeObject(Root);
+				out.close();
+				fileOut.close();
+				System.out.printf("Serialized data is saved in Tree.dat\n");
+			}catch(IOException i){
+			    i.printStackTrace();
+			}
 						
 			
 			for(int i = 0;i<lista.nevek_listaja.size(); i++){//tesztkimenet konzolra

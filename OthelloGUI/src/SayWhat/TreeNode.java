@@ -68,7 +68,7 @@ private static final long serialVersionUID = 1L;
 	}
 	public void setWinRate(){
 		if (WinCount>0 || LoseCount>0){
-			WinRate=WinCount/(WinCount+LoseCount);
+			WinRate=(double)WinCount/(WinCount+LoseCount);
 		}
 	} 
 	
