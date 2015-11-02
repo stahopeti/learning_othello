@@ -83,7 +83,7 @@ public class Ujjatek extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			int x=0,y=0;//ezeket adja tovább koordinátaként a sotetLep vagy vilagosLep függvénynek
 			int lepett_e=0;
-			System.out.println("koronglistener\n");						
+			System.out.println("Koronglistener\n");						
 			
 			for(int i=1;i<9;i++){
 				for(int j=1;j<9;j++){
@@ -99,84 +99,54 @@ public class Ujjatek extends JFrame{
 			
 			if(korszamlalo%2==0)//Globális változó, ha páros, sotetLep, ha páratlan vilagosLep.
 				try {
-					lepett_e = sotetLep(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
-					if (lepett_e>0){
-						boolean beszur=true;
-						String part1=Integer.toString(x);
-						String part2=Integer.toString(y);
-						lepesSorozat.add(part1+part2);                       //Pozíció Stringgé alakítása
-						
-						TreeNode aktualis=new TreeNode(part1+part2);   //létrehozom a beszúrandó elemet
-					    
-						TreeNode[] gyerekek=elozoElement.getChildren();   //az elõzõ elemnek megnézem a gyerekeit
-						//Lehet h az az elem már korábban be volt szúrva, tehát lehetnek gyerekei, az is lehet h friss ez az ág és nincs is még gyereke.
-						for (TreeNode i : gyerekek){							//megnézem, hogy a szülõnek van-e már ilyen gyereke
-					    	System.out.println("ittvagyok!\n");
-							if (i.getPosition().equals(aktualis.getPosition())){
-					    		elozoElement=aktualis;                          //ha van már ilyen gyereke, akkor nem kell beszúrnom
-					    		beszur=false;
-					    	}	    	
-					    }
-						if (beszur){                                            //ha még nem volt ilyen gyerek, akkor beszúrás gyereknek
-							elozoElement.add(aktualis);
-							elozoElement=aktualis;	
-						}																		
-					}
+					List<String> lehetsegesLepesek = new ArrayList<String>();     
+					lehetsegesLepesek=lehetsegesLepesLista();            //kigyûjtöm egy listába a lehetséges lépéseket
+					
+					if (lehetsegesLepesek.size()==0){korszamlalo++;}	 //ha nincs hova lépni, akkor passzolni kell
+					else{
+						lepett_e = sotetLep(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
+						if (lepett_e>0){
+							fabaSzur(x,y);
+							korszamlalo++;
+						}
+					}																						
 				} catch (IOException e1) {
 				
 					e1.printStackTrace();
 				}
 			if(korszamlalo%2==1){
 				List<String> lehetsegesLepesek = new ArrayList<String>();
-				lehetsegesLepesek=vizsgalat();
+				lehetsegesLepesek=lehetsegesLepesLista();
 				
 				System.out.println("Lehetséges lépések:");
 				for (int i=0;i<lehetsegesLepesek.size();i++){
 					System.out.println(lehetsegesLepesek.get(i));
 				}
-				
-				Random rand = new Random(); 
-				int randomValue = rand.nextInt(lehetsegesLepesek.size()); 
-				System.out.println("RANDOM"+randomValue);
-				
-				int a=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
-				int b=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
-				
-				try {
-					lepett_e = vilagosLep(a,b,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
-					if (lepett_e>0){
-						boolean beszur=true;
-						String part1=Integer.toString(a);
-						String part2=Integer.toString(b);
-						lepesSorozat.add(part1+part2);                       //Pozíció Stringgé alakítása
-						
-						TreeNode aktualis=new TreeNode(part1+part2);   //létrehozom a beszúrandó elemet
-					    
-						TreeNode[] gyerekek=elozoElement.getChildren();   //az elõzõ elemnek megnézem a gyerekeit
-						//Lehet h az az elem már korábban be volt szúrva, tehát lehetnek gyerekei, az is lehet h friss ez az ág és nincs is még gyereke.
-						for (TreeNode i : gyerekek){							//megnézem, hogy a szülõnek van-e már ilyen gyereke
-					    	System.out.println("ittvagyok!\n");
-							if (i.getPosition().equals(aktualis.getPosition())){
-					    		elozoElement=aktualis;                          //ha van már ilyen gyereke, akkor nem kell beszúrnom
-					    		beszur=false;
-					    	}	    	
-					    }
-						if (beszur){                                            //ha még nem volt ilyen gyerek, akkor beszúrás gyereknek
-							elozoElement.add(aktualis);
-							elozoElement=aktualis;	
-						}					
+				if (lehetsegesLepesek.size()==0){korszamlalo++;}
+				else{
+					Random rand = new Random(); 
+					int randomValue = rand.nextInt(lehetsegesLepesek.size());                //veszek egy random számot
+					System.out.println("RANDOM: "+randomValue);
+					
+					x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
+					y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
+					
+					try {
+						lepett_e = vilagosLep(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
+						if (lepett_e>0){
+							fabaSzur(x,y);
+							korszamlalo++;
+						}
+					}catch (IOException e1) {
+					
+						e1.printStackTrace();
 					}
-				}catch (IOException e1) {
-				
-					e1.printStackTrace();
 				}
 			}
-			System.out.println("lepes: " + korszamlalo%2 + "lepett_e: " + lepett_e);//teszt kimenet a konzolra
-			if(lepett_e>0) {
-				korszamlalo++;//ha volt lépés növelje a korszámlálót
-				
+			System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
+			if(lepett_e==0) {
+				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
 			}
-			else{rossz_lepes.setText("Rossz Lépés!");}//ha nem volt írja ki, hogy "Rossz lépés!".
 			
 			
 			
@@ -193,17 +163,17 @@ public class Ujjatek extends JFrame{
 		
 	} 
 	
-	public List<String> vizsgalat(){
+	public List<String> lehetsegesLepesLista(){
 		List<String> lepesek = new ArrayList<String>();
 		
-		if(korszamlalo%2==0){//Globális változó, ha páros, sotetLep, ha páratlan vilagosLep.
-			for(int i=1;i<9;i++){
+		if(korszamlalo%2==0){       						       //külön fehér, külön fekete játékos esetén
+			for(int i=1;i<9;i++){                   		       //bevégigmegyek a tábla összes elemén (ezen lehet talán optimalizálni késõbb)
 				for(int j=1;j<9;j++){
 						try {
-							if (0<sotetLep(i,j,true)){//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
+							if (0<sotetLep(i,j,true)){             //megvizsgálom, hogy a lépés lehetséges-e
 								String part1=Integer.toString(i);
 								String part2=Integer.toString(j);
-								lepesek.add(part1+part2);
+								lepesek.add(part1+part2);          //belerakom a listába
 							}
 						} catch (IOException e1) {
 					
@@ -212,11 +182,11 @@ public class Ujjatek extends JFrame{
 				}
 			}
 		}
-		if(korszamlalo%2==1){
+		if(korszamlalo%2==1){              							//ugyan az, mint fekete játékos esetén
 			for(int i=1;i<9;i++){
 				for(int j=1;j<9;j++){
 					try {
-						if (0<vilagosLep(i,j,true)){//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
+						if (0<vilagosLep(i,j,true)){
 							String part1=Integer.toString(i);
 							String part2=Integer.toString(j);
 							lepesek.add(part1+part2);
@@ -231,7 +201,30 @@ public class Ujjatek extends JFrame{
 		}
 		return lepesek;
 	}
-	
+
+	public void fabaSzur(int x, int y){
+		boolean beszur=true;
+		String part1=Integer.toString(x);
+		String part2=Integer.toString(y);
+		lepesSorozat.add(part1+part2);                       //Pozíció Stringgé alakítása
+		
+		TreeNode aktualis=new TreeNode(part1+part2);         //létrehozom a beszúrandó elemet
+	    
+		TreeNode[] gyerekek=elozoElement.getChildren();   //az elõzõ elemnek megnézem a gyerekeit
+		
+		//Lehet h az az elem már korábban be volt szúrva, tehát lehetnek gyerekei, az is lehet h friss ez az ág és nincs is még gyereke.
+		for (TreeNode i : gyerekek){							//megnézem, hogy a szülõnek van-e már ilyen gyereke
+	    	System.out.println("ittvagyok!\n");
+			if (i.getPosition().equals(aktualis.getPosition())){
+	    		elozoElement=aktualis;                          //ha van már ilyen gyereke, akkor nem kell beszúrnom
+	    		beszur=false;
+	    	}	    	
+	    }
+		if (beszur){                                            //ha még nem volt ilyen gyerek, akkor beszúrás gyereknek
+			elozoElement.add(aktualis);
+			elozoElement=aktualis;	
+		}	
+	}
 
 	public Ujjatek(){
 	//Frame konstruktor. A frame mérete 1280x720, neve "Uj_jatek".
@@ -362,7 +355,7 @@ public class Ujjatek extends JFrame{
 			TreeNode asd=TestElsoGyerekGyereke[0];
 			TreeNode[] wtf=asd.getChildren();
 			
-			System.out.println("Root Gyerekei:");
+			System.out.println("Tesztelési célokra:\nRoot Gyerekei:");
 			for (int i=0;i<TestRoot.length;i++){
 				System.out.println(TestRoot[i].getPosition());
 			}
