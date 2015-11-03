@@ -202,12 +202,12 @@ public class Ujjatek extends JFrame{
 		
 		TreeNode aktualis=new TreeNode(part1+part2);         //létrehozom a beszúrandó elemet
 	    
-		TreeNode[] gyerekek=elozoElement.getChildren();   //az elõzõ elemnek megnézem a gyerekeit
+		TreeNode[] gyerekek=elozoElement.getChildren();      //az elõzõ elemnek megnézem a gyerekeit
 		
 		//Lehet h az az elem már korábban be volt szúrva, tehát lehetnek gyerekei, az is lehet h friss ez az ág és nincs is még gyereke.
 		for (TreeNode i : gyerekek){							//megnézem, hogy a szülõnek van-e már ilyen gyereke
 			if (i.getPosition().equals(aktualis.getPosition())){
-	    		elozoElement=aktualis;                          //ha van már ilyen gyereke, akkor nem kell beszúrnom
+	    		elozoElement=i;                          //ha van már ilyen gyereke, akkor nem kell beszúrnom
 	    		beszur=false;
 	    	}	    	
 	    }
@@ -337,27 +337,26 @@ public class Ujjatek extends JFrame{
 	       fileIn.close();
 		   Root=serTreeNode;
 		   elozoElement=Root;
-		   System.out.println("Sikerült az adatbázis betöltése");
-		   
+		   System.out.println("Sikerült az adatbázis betöltése");		   
 		   
 		   //Tesztelgetéshez..  
-			TreeNode[] TestRoot=Root.getChildren();
-			TreeNode[] TestElsoGyerekGyereke=Root.getChildren()[1].getChildren();
-			TreeNode asd=TestElsoGyerekGyereke[0];
-			TreeNode[] wtf=asd.getChildren();
-			
-			System.out.println("Tesztelési célokra:\nRoot Gyerekei:");
-			for (int i=0;i<TestRoot.length;i++){
-				System.out.println(TestRoot[i].getPosition());
-			}
-			System.out.println("Most épp a Root 2 gyerekének gyerekei:");
-			for (int i=0;i<TestElsoGyerekGyereke.length;i++){
-				System.out.println(TestElsoGyerekGyereke[i].getPosition());
-			}
-			System.out.println("Most épp a Root 2 gyerekének az elsõ gyerekének a gyerekei:");
-			for (int i=0;i<wtf.length;i++){
-				System.out.println(wtf[i].getPosition());
-			}
+//			TreeNode[] TestRoot=Root.getChildren();
+//			TreeNode[] TestElsoGyerekGyereke=Root.getChildren()[1].getChildren();
+//			TreeNode asd=TestElsoGyerekGyereke[0];
+//			TreeNode[] wtf=asd.getChildren();
+//			
+//			System.out.println("Tesztelési célokra:\nRoot Gyerekei:");
+//			for (int i=0;i<TestRoot.length;i++){
+//				System.out.println(TestRoot[i].getPosition() + " Winrate: " + TestRoot[i].getWinRate());
+//			}
+//			System.out.println("Most épp a Root 2 gyerekének gyerekei:");
+//			for (int i=0;i<TestElsoGyerekGyereke.length;i++){
+//				System.out.println(TestElsoGyerekGyereke[i].getPosition());
+//			}
+//			System.out.println("Most épp a Root 2 gyerekének az elsõ gyerekének a gyerekei:");
+//			for (int i=0;i<wtf.length;i++){
+//				System.out.println(wtf[i].getPosition());
+//			}
 			
 	    }catch(IOException i)
 	    {
@@ -457,9 +456,7 @@ public class Ujjatek extends JFrame{
 		//"Név : pontszám" labelre
 		fkt.setText("Fekete Játékos: "+ gameh.hanySotet());
 		fhr.setText("Fehér Játékos: "+ gameh.hanyVilagos());
-		rossz_lepes.setText("");
-		
-		TreeNode Last=elozoElement;
+		rossz_lepes.setText("");		
 		
 		if(gameh.hanyUres()==0){            //ha már nincs üres.
 											
@@ -485,9 +482,12 @@ public class Ujjatek extends JFrame{
 				nyertes = fekete.getText();
 				
 				for (int i=0;i<lepesSorozat.size();i++){
+					System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incWinCount();
 					elozoElement.setWinRate();
+					System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
+					
 				}
 				
 				
@@ -498,8 +498,10 @@ public class Ujjatek extends JFrame{
 				nyertes = feher.getText();
 				
 				for (int i=0;i<lepesSorozat.size();i++){
+					System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incLoseCount();
 					elozoElement.setWinRate();
+					System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 				}
 				
@@ -508,12 +510,9 @@ public class Ujjatek extends JFrame{
 			
 			System.out.println("fekete: "  + feketeSc + "feher: "+ feherSc);//teszt kimenet konzolra
 			    
-			System.out.println("utolsóelõtti node: "+ Last.getParent().getPosition() +  " Winrateje: " + Last.getParent().getWinRate());
-			System.out.println("utolsó node: "+ Last.getPosition() + " Winrateje: "+ Last.getWinRate());
 			
 			
-			
-			
+						
 			try{																		//szerializálom a Tree-t
 				FileOutputStream fileOut = new FileOutputStream("Tree.dat");
 				ObjectOutputStream out = new ObjectOutputStream(fileOut);

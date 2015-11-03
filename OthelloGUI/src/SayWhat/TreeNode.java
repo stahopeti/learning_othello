@@ -49,7 +49,7 @@ private static final long serialVersionUID = 1L;
    */
   private TreeNode[] children = new TreeNode[0];
   
-  private String Position;
+  	private String Position;
 	private int WinCount;
 	private int LoseCount;
 	private double WinRate;
@@ -62,6 +62,9 @@ private static final long serialVersionUID = 1L;
 	}
 	public String getPosition(){
 		return Position;
+	}
+	public int getWinCount(){
+		return WinCount;
 	}
 	public double getWinRate(){
 		return WinRate;
