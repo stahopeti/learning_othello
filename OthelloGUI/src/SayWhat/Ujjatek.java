@@ -96,7 +96,7 @@ public class Ujjatek extends JFrame{
 			}
 			
 			if(korszamlalo%2==0)//Globális változó, ha páros, sotetLep, ha páratlan vilagosLep.
-				try {
+				try { //emberi játékos
 					List<String> lehetsegesLepesek = new ArrayList<String>();     
 					lehetsegesLepesek=lehetsegesLepesLista();            //kigyûjtöm egy listába a lehetséges lépéseket
 					
@@ -114,18 +114,18 @@ public class Ujjatek extends JFrame{
 				} catch (IOException e1) {		
 					e1.printStackTrace();
 				}
-			if(korszamlalo%2==1){
+			if(korszamlalo%2==1){  //gépi játékos
 				List<String> lehetsegesLepesek = new ArrayList<String>();
-				lehetsegesLepesek=lehetsegesLepesLista();
+				lehetsegesLepesek=lehetsegesLepesLista();             //kigyûjtöm egy listába a lehetséges lépéseket
 				
 				System.out.println("Lehetséges lépések:");
 				for (int i=0;i<lehetsegesLepesek.size();i++){
 					System.out.println(lehetsegesLepesek.get(i));
 				}
 				
-				if (lehetsegesLepesek.size()==0){korszamlalo++;}
+				if (lehetsegesLepesek.size()==0){korszamlalo++;}         //ha nincs hova lépni, akkor passzolni kell
 				else{
-					String Lepes=feherComputerLep(lehetsegesLepesek);
+					String Lepes=feherComputerLep(lehetsegesLepesek);    //kiszámolja, hogy hova kell lépnie
 					x=Character.getNumericValue(Lepes.charAt(0));
 					y=Character.getNumericValue(Lepes.charAt(1));
 				}													
@@ -214,7 +214,7 @@ public class Ujjatek extends JFrame{
 	}
 	
 	public String feherComputerLep(List<String> lehetsegesLepesek){
-		TreeNode[] Gyerekek=elozoElement.getChildren();        //FONTOS: mivel ez a fehér játékos és a WinRate a kezdõ azaz fekete játékosra vonatkozik!!!
+		TreeNode[] Gyerekek=elozoElement.getChildren();        //FONTOS: mivel ez a fehér játékos; a WinRate a kezdõ, azaz fekete játékosra vonatkozik!!!
 		int x;
 		int y;
 		
@@ -242,12 +242,12 @@ public class Ujjatek extends JFrame{
 						if ((1-gyerek.getWinRate())>TempMax){				//ha benne van, akkor maxkeresés a WinRate-re
 							TempMax=gyerek.getWinRate();
 							TempPosIndex=i;
-							lehetsegesLepesek.remove(i);				//kiveszem a listából
+							lehetsegesLepesek.remove(i);			     	//kiveszem a listából
 						}
 					}
 				}	
 			}
-			if (TempMax<0.5){
+			if (TempMax>0.5){
 				x=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(0)));
 				y=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(1)));	
 				
@@ -288,7 +288,7 @@ public class Ujjatek extends JFrame{
 			double TempMax=0.0;
 			int TempPosIndex=0;
 			
-			System.out.println("TESZT-FEHÉR_COMPUTER_LÉP");
+			System.out.println("TESZT-FEKETE_COMPUTER_LÉP");
 			
 			for (TreeNode gyerek : Gyerekek){                   		//végigmegyek a gyerekeken            		
 				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
@@ -568,7 +568,7 @@ public class Ujjatek extends JFrame{
 		fhr.setText("Fehér Játékos: "+ gameh.hanyVilagos());
 		rossz_lepes.setText("");		
 		
-		if(gameh.hanyUres()==0){            //ha már nincs üres.
+		if(gameh.hanyUres()==0 || gameh.hanySotet()==0 || gameh.hanyVilagos()==0){            //ha már nincs üres, vagy elfogyott az egyik játékos korongja
 											
 			int allas = 0; // ha fekete nyert 0 ha fehér 1 ha döntetlen 2
 				

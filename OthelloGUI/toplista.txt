@@ -1,4 +1,4 @@
-Player 1_34
+Player 1_36
 macska_1
 Player 2_1
 Teszt_1
