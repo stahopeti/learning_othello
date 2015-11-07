@@ -125,67 +125,22 @@ public class Ujjatek extends JFrame{
 				
 				if (lehetsegesLepesek.size()==0){korszamlalo++;}
 				else{
-					TreeNode[] Gyerekek=elozoElement.getChildren();        //FONTOS: mivel ez a fehér játékos és a WinRate a kezdõ azaz fekete játékosra vonatkozik!!!
-					
-					if (Gyerekek.length==0){                               //ha nincs gyereke akkor mindegyik WinRate 0.5 tehát mehet a random
-						System.out.println("Nincs még gyereke");
-						Random rand = new Random(); 
-						int randomValue = rand.nextInt(lehetsegesLepesek.size());                //veszek egy random számot
-						System.out.println("RANDOM: "+randomValue);
-						
-						x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
-						y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
+					String Lepes=feherComputerLep(lehetsegesLepesek);
+					x=Character.getNumericValue(Lepes.charAt(0));
+					y=Character.getNumericValue(Lepes.charAt(1));
+				}													
+				try {
+					lepett_e = gameh.vilagosForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
+					if (lepett_e>0){
+						fabaSzur(x,y);
+						korszamlalo++;
+						update();//Update függvény frissíti a táblát.
+						System.out.println("updateolva");//tesztkimenet konzolra
+						gameh.asztalKiir();
 					}
-					else{
-						double TempMax=0.0;
-						int TempPosIndex=0;
-						
-						for (TreeNode gyerek : Gyerekek){                   		//végigmegyek a gyerekeken            		
-							for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
-								if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
-									//TESZT
-									System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMax);
-									
-									if (gyerek.getWinRate()>TempMax){				//ha benne van, akkor maxkeresés a WinRate-re
-										TempMax=gyerek.getWinRate();
-										TempPosIndex=i;
-										lehetsegesLepesek.remove(i);				//kiveszem a listából
-									}
-								}
-							}	
-						}
-						if (TempMax>0.5){
-							x=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(0)));
-							y=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(1)));	
-							
-						}
-						else{  // ha a legnagyobb gyerek WinRate-je kisebb mint 0.5, akkor jobb a maradék lépések közül random választani, hiszen a ki nem próbált ágak
-							if (lehetsegesLepesek.size()>0){
-								Random rand = new Random(); 
-								int randomValue = rand.nextInt(lehetsegesLepesek.size()); 						
-								x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
-								y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
-							}
-							else{  //ha az összes gyerek WinRate-je 0.5 alatt volt, és benne volt a lehetséges lépések listájában ez az eset áll elõ
-								x=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(0)));
-								y=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(1)));
-							}
-						}
-						
-					}													
-					try {
-						lepett_e = gameh.vilagosForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
-						if (lepett_e>0){
-							fabaSzur(x,y);
-							korszamlalo++;
-							update();//Update függvény frissíti a táblát.
-							System.out.println("updateolva");//tesztkimenet konzolra
-							gameh.asztalKiir();
-						}
-					}catch (IOException e1) {
-					
-						e1.printStackTrace();
-					}
+				}catch (IOException e1) {
+				
+					e1.printStackTrace();
 				}
 			}
 			System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
@@ -257,7 +212,121 @@ public class Ujjatek extends JFrame{
 			elozoElement=aktualis;	
 		}	
 	}
+	
+	public String feherComputerLep(List<String> lehetsegesLepesek){
+		TreeNode[] Gyerekek=elozoElement.getChildren();        //FONTOS: mivel ez a fehér játékos és a WinRate a kezdõ azaz fekete játékosra vonatkozik!!!
+		int x;
+		int y;
+		
+		if (Gyerekek.length==0){                               //ha nincs gyereke akkor mindegyik WinRate 0.5 tehát mehet a random
+			System.out.println("Nincs még gyereke");
+			Random rand = new Random(); 
+			int randomValue = rand.nextInt(lehetsegesLepesek.size());                //veszek egy random számot
+			System.out.println("RANDOM: "+randomValue);
+			
+			x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
+			y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
+		}
+		else{
+			double TempMax=0.0;
+			int TempPosIndex=0;
+			
+			System.out.println("TESZT-FEHÉR_COMPUTER_LÉP");
+			
+			for (TreeNode gyerek : Gyerekek){                   		//végigmegyek a gyerekeken            		
+				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
+					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
+						//TESZT
+						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMax);
+						
+						if ((1-gyerek.getWinRate())>TempMax){				//ha benne van, akkor maxkeresés a WinRate-re
+							TempMax=gyerek.getWinRate();
+							TempPosIndex=i;
+							lehetsegesLepesek.remove(i);				//kiveszem a listából
+						}
+					}
+				}	
+			}
+			if (TempMax<0.5){
+				x=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(0)));
+				y=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(1)));	
+				
+			}
+			else{  // ha a legnagyobb gyerek WinRate-je kisebb mint 0.5, akkor jobb a maradék lépések közül random választani, hiszen a ki nem próbált ágak
+				if (lehetsegesLepesek.size()>0){
+					Random rand = new Random(); 
+					int randomValue = rand.nextInt(lehetsegesLepesek.size()); 						
+					x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
+					y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
+				}
+				else{  //ha az összes gyerek WinRate-je 0.5 alatt volt, és benne volt a lehetséges lépések listájában ez az eset áll elõ
+					x=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(0)));
+					y=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(1)));
+				}
+			}
+		}
+		String part1=Integer.toString(x);
+		String part2=Integer.toString(y);
+		return part1+part2;
+	}
 
+	public String feketeComputerLep(List<String> lehetsegesLepesek){
+		TreeNode[] Gyerekek=elozoElement.getChildren();       
+		int x;
+		int y;
+		
+		if (Gyerekek.length==0){                               //ha nincs gyereke akkor mindegyik WinRate 0.5 tehát mehet a random
+			System.out.println("Nincs még gyereke");
+			Random rand = new Random(); 
+			int randomValue = rand.nextInt(lehetsegesLepesek.size());                //veszek egy random számot
+			System.out.println("RANDOM: "+randomValue);
+			
+			x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
+			y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
+		}
+		else{
+			double TempMax=0.0;
+			int TempPosIndex=0;
+			
+			System.out.println("TESZT-FEHÉR_COMPUTER_LÉP");
+			
+			for (TreeNode gyerek : Gyerekek){                   		//végigmegyek a gyerekeken            		
+				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
+					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
+						//TESZT
+						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMax);
+						
+						if (gyerek.getWinRate()>TempMax){				//ha benne van, akkor maxkeresés a WinRate-re
+							TempMax=gyerek.getWinRate();
+							TempPosIndex=i;
+							lehetsegesLepesek.remove(i);				//kiveszem a listából
+						}
+					}
+				}	
+			}
+			if (TempMax>0.5){
+				x=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(0)));
+				y=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(1)));	
+				
+			}
+			else{  // ha a legnagyobb gyerek WinRate-je kisebb mint 0.5, akkor jobb a maradék lépések közül random választani, hiszen a ki nem próbált ágak
+				if (lehetsegesLepesek.size()>0){
+					Random rand = new Random(); 
+					int randomValue = rand.nextInt(lehetsegesLepesek.size()); 						
+					x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
+					y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
+				}
+				else{  //ha az összes gyerek WinRate-je 0.5 alatt volt, és benne volt a lehetséges lépések listájában ez az eset áll elõ
+					x=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(0)));
+					y=Character.getNumericValue((lehetsegesLepesek.get(TempPosIndex).charAt(1)));
+				}
+			}
+		}
+		String part1=Integer.toString(x);
+		String part2=Integer.toString(y);
+		return part1+part2;
+	}
+	
 	public Ujjatek(){
 	//Frame konstruktor. A frame mérete 1280x720, neve "Uj_jatek".
 		super("Uj_jatek");
