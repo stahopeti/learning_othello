@@ -92,6 +92,7 @@ private static final long serialVersionUID = 1L;
 		Position=Pos;
 		WinCount=5;
 		LoseCount=5;
+		setWinRate();
   }
   
   /**
