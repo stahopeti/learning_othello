@@ -219,32 +219,32 @@ public class UjjatekEmberVsGep extends JFrame{
 			String Lepes=feketeComputerLep(lehetsegesLepesek);    //kiszámolja, hogy hova kell lépnie
 			x=Character.getNumericValue(Lepes.charAt(0));
 			y=Character.getNumericValue(Lepes.charAt(1));
-		}													
-		try {
+															
 			lepett_e = gameh.sotetForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 			if (lepett_e>0){
 				fabaSzur(x,y);
 				korszamlalo++;
-				update();//Update függvény frissíti a táblát.
+				try {
+					update();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				System.out.println("updateolva");//tesztkimenet konzolra
 				gameh.asztalKiir();
 			}
-		}catch (IOException e1) {
+			System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
+			if(lepett_e==0) {
+				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
+			}				
+			
+			System.out.println("Lépések sorozata:");
+			for (int i=0;i<lepesSorozat.size();i++){
+				System.out.println(lepesSorozat.get(i));
+			}
 		
-			e1.printStackTrace();
+			System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
 		}
-	
-		System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
-		if(lepett_e==0) {
-			rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
-		}					
-		
-		System.out.println("Lépések sorozata:");
-		for (int i=0;i<lepesSorozat.size();i++){
-			System.out.println(lepesSorozat.get(i));
-		}
-	
-		System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
 	}
 
 	public void feherComputer(){ 				//fehér gépi játékos lépése 
@@ -264,36 +264,29 @@ public class UjjatekEmberVsGep extends JFrame{
 		else{
 			String Lepes=feherComputerLep(lehetsegesLepesek);    //kiszámolja, hogy hova kell lépnie
 			x=Character.getNumericValue(Lepes.charAt(0));
-			y=Character.getNumericValue(Lepes.charAt(1));
-		}													
-		try {
+			y=Character.getNumericValue(Lepes.charAt(1));													
+			
 			lepett_e = gameh.vilagosForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 			if (lepett_e>0){
 				fabaSzur(x,y);
 				korszamlalo++;
-				update();//Update függvény frissíti a táblát.
+				try {
+					update();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				System.out.println("updateolva");//tesztkimenet konzolra
 				gameh.asztalKiir();
 			}
-		}catch (IOException e1) {
-		
-			e1.printStackTrace();
-		}
 	
-		System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
-		if(lepett_e==0) {
-			rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
-		}
-							
-		
-		System.out.println("Lépések sorozata:");
-		for (int i=0;i<lepesSorozat.size();i++){
-			System.out.println(lepesSorozat.get(i));
-		}
-		
-				
-		System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
-		
+			System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
+			if(lepett_e==0) {
+				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 							
+						
+				System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
+			}
+		}	
 	}
 	
 	public String feherComputerLep(List<String> lehetsegesLepesek){
@@ -669,8 +662,9 @@ public class UjjatekEmberVsGep extends JFrame{
 		fhr.setText("Fehér Játékos: "+ gameh.hanyVilagos());
 		rossz_lepes.setText("");		
 		
+		System.out.println("ÜRESEK SZÁMA VÉGE ELÕTTI VIZSGÁLATKOR: " + gameh.hanyUres());
 		if(gameh.hanyUres()==0 || gameh.hanySotet()==0 || gameh.hanyVilagos()==0){            //ha már nincs üres, vagy elfogyott az egyik játékos korongja
-											
+			System.out.println("VÉGE LETT");								
 			int allas = 0; // ha fekete nyert 0 ha fehér 1 ha döntetlen 2
 				
 			//pontszám beállítása

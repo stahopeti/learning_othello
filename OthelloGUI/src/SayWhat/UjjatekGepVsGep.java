@@ -149,32 +149,32 @@ public class UjjatekGepVsGep extends JFrame{
 			String Lepes=feketeComputerLep(lehetsegesLepesek);    //kiszámolja, hogy hova kell lépnie
 			x=Character.getNumericValue(Lepes.charAt(0));
 			y=Character.getNumericValue(Lepes.charAt(1));
-		}													
-		try {
+															
 			lepett_e = gameh.sotetForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 			if (lepett_e>0){
 				fabaSzur(x,y);
 				korszamlalo++;
-				update();//Update függvény frissíti a táblát.
+				try {
+					update();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				System.out.println("updateolva");//tesztkimenet konzolra
 				gameh.asztalKiir();
 			}
-		}catch (IOException e1) {
+			System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
+			if(lepett_e==0) {
+				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
+			}				
+			
+			System.out.println("Lépések sorozata:");
+			for (int i=0;i<lepesSorozat.size();i++){
+				System.out.println(lepesSorozat.get(i));
+			}
 		
-			e1.printStackTrace();
+			System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
 		}
-	
-		System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
-		if(lepett_e==0) {
-			rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
-		}					
-		
-		System.out.println("Lépések sorozata:");
-		for (int i=0;i<lepesSorozat.size();i++){
-			System.out.println(lepesSorozat.get(i));
-		}
-	
-		System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
 	}
 
 	public void feherComputer(){ 				//fehér gépi játékos lépése 
@@ -190,42 +190,33 @@ public class UjjatekGepVsGep extends JFrame{
 			System.out.println(lehetsegesLepesek.get(i));
 		}
 		
-		if (lehetsegesLepesek.size()==0){
-			korszamlalo++;
-			}         //ha nincs hova lépni, akkor passzolni kell
+		if (lehetsegesLepesek.size()==0){korszamlalo++;}         //ha nincs hova lépni, akkor passzolni kell
 		else{
 			String Lepes=feherComputerLep(lehetsegesLepesek);    //kiszámolja, hogy hova kell lépnie
 			x=Character.getNumericValue(Lepes.charAt(0));
-			y=Character.getNumericValue(Lepes.charAt(1));
-		}													
-		try {
+			y=Character.getNumericValue(Lepes.charAt(1));													
+			
 			lepett_e = gameh.vilagosForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 			if (lepett_e>0){
 				fabaSzur(x,y);
 				korszamlalo++;
-				update();//Update függvény frissíti a táblát.
+				try {
+					update();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				System.out.println("updateolva");//tesztkimenet konzolra
 				gameh.asztalKiir();
 			}
-		}catch (IOException e1) {
-		
-			e1.printStackTrace();
-		}
 	
-		System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
-		if(lepett_e==0) {
-			rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
-		}
-							
-		
-		System.out.println("Lépések sorozata:");
-		for (int i=0;i<lepesSorozat.size();i++){
-			System.out.println(lepesSorozat.get(i));
-		}
-		
-				
-		System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
-		
+			System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
+			if(lepett_e==0) {
+				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 							
+						
+				System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
+			}
+		}	
 	}
 	
 	public String feherComputerLep(List<String> lehetsegesLepesek){
@@ -462,12 +453,53 @@ public class UjjatekGepVsGep extends JFrame{
 		this.pack();
 		System.out.println("jatekhivas elõtt állunk");
 		try {
-			
-		for(int i=0;i<howManyGames;i++){
-			
-			jatek();
-			System.out.println((i+1) + "-edik játék vége");
-		}
+			for(int i=0;i<howManyGames;i++){	
+				
+				//Adatbázis betöltése
+				TreeNode serTreeNode = null;
+			    try
+			    {
+			       FileInputStream fileIn = new FileInputStream("Tree.dat");
+			       ObjectInputStream in = new ObjectInputStream(fileIn);
+			       serTreeNode = (TreeNode) in.readObject();
+			       in.close();
+			       fileIn.close();
+				   Root=serTreeNode;
+				   elozoElement=Root;
+				   System.out.println("Sikerült az adatbázis betöltése");		   
+				   
+				   //Tesztelgetéshez..  
+//					TreeNode[] TestRoot=Root.getChildren();
+//					TreeNode[] TestElsoGyerekGyereke=Root.getChildren()[1].getChildren();
+//					TreeNode asd=TestElsoGyerekGyereke[0];
+//					TreeNode[] wtf=asd.getChildren();
+//					
+//					System.out.println("Tesztelési célokra:\nRoot Gyerekei:");
+//					for (int i=0;i<TestRoot.length;i++){
+//						System.out.println(TestRoot[i].getPosition() + " Winrate: " + TestRoot[i].getWinRate());
+//					}
+//					System.out.println("Most épp a Root 2 gyerekének gyerekei:");
+//					for (int i=0;i<TestElsoGyerekGyereke.length;i++){
+//						System.out.println(TestElsoGyerekGyereke[i].getPosition());
+//					}
+//					System.out.println("Most épp a Root 2 gyerekének az elsõ gyerekének a gyerekei:");
+//					for (int i=0;i<wtf.length;i++){
+//						System.out.println(wtf[i].getPosition());
+//					}
+					
+			    }catch(IOException e)
+			    {
+			       e.printStackTrace();
+				   System.out.println("Nem sikerült az adatbázis betöltése");
+			    }catch(ClassNotFoundException c)
+			    {
+			       System.out.println("Tree class not found");
+			       c.printStackTrace();
+			    }
+
+				jatek();
+				System.out.println((i+1) + "-edik játék vége");
+			}
 		
 		
 		} catch (NumberFormatException e) {
@@ -477,51 +509,7 @@ public class UjjatekGepVsGep extends JFrame{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		//Adatbázis betöltése
-		TreeNode serTreeNode = null;
-	    try
-	    {
-	       FileInputStream fileIn = new FileInputStream("Tree.dat");
-	       ObjectInputStream in = new ObjectInputStream(fileIn);
-	       serTreeNode = (TreeNode) in.readObject();
-	       in.close();
-	       fileIn.close();
-		   Root=serTreeNode;
-		   elozoElement=Root;
-		   System.out.println("Sikerült az adatbázis betöltése");		   
-		   
-		   //Tesztelgetéshez..  
-//			TreeNode[] TestRoot=Root.getChildren();
-//			TreeNode[] TestElsoGyerekGyereke=Root.getChildren()[1].getChildren();
-//			TreeNode asd=TestElsoGyerekGyereke[0];
-//			TreeNode[] wtf=asd.getChildren();
-//			
-//			System.out.println("Tesztelési célokra:\nRoot Gyerekei:");
-//			for (int i=0;i<TestRoot.length;i++){
-//				System.out.println(TestRoot[i].getPosition() + " Winrate: " + TestRoot[i].getWinRate());
-//			}
-//			System.out.println("Most épp a Root 2 gyerekének gyerekei:");
-//			for (int i=0;i<TestElsoGyerekGyereke.length;i++){
-//				System.out.println(TestElsoGyerekGyereke[i].getPosition());
-//			}
-//			System.out.println("Most épp a Root 2 gyerekének az elsõ gyerekének a gyerekei:");
-//			for (int i=0;i<wtf.length;i++){
-//				System.out.println(wtf[i].getPosition());
-//			}
 			
-	    }catch(IOException i)
-	    {
-	       i.printStackTrace();
-		   System.out.println("Nem sikerült az adatbázis betöltése");
-	    }catch(ClassNotFoundException c)
-	    {
-	       System.out.println("Tree class not found");
-	       c.printStackTrace();
-	    }
-		
-
-		
 	}
 	
 
