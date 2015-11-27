@@ -28,7 +28,6 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-import SayWhat.Toplista.BtnListener;
 
 public class Ujjatek extends JFrame{
 
@@ -39,6 +38,7 @@ public class Ujjatek extends JFrame{
 	static int korszamlalo = 0; //Ezáltal döntjük el ki következik. 
 	private int feherSc =0, feketeSc =0; //Játékosok pontszámai.
 	TOPLIST lista = new TOPLIST(); //név_pontszám formátumban
+	private boolean jatekVege = false;
 	
 	//2dimenziós gombtömb.
 		JButton[][] tabla = new JButton[10][10];

@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 public class GUIllermo extends JFrame {//fõmenü frameje
 	
@@ -23,6 +24,7 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 	private JButton newGameHumanVSComputer = new JButton("Ember a gép ellen");
 	private JButton newGameComputerVSComputer = new JButton("Gép a gép ellen");
 	private JButton exit = new JButton("Kilépés");
+	private JTextField howManyRounds = new JTextField();
 	
 	public  class BtnListener implements ActionListener{//buttonactionlistener, mindhárom gombra, stringet kap paraméterként, ezek alapján hívja a különbözõ frameket
 		
@@ -62,7 +64,7 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 		
 		newGame.setBounds(450, 100, 400, 100);
 		newGameHumanVSComputer.setBounds(450, 225, 400, 100);
-		newGameComputerVSComputer.setBounds(450, 350, 400, 100);
+		newGameComputerVSComputer.setBounds(450, 350, 400, 100); howManyRounds.setBounds(815,390,100,25);
 		exit.setBounds(550, 475, 200, 100);
 		
 		newGame.setBorder(null);
@@ -89,9 +91,15 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 		this.add(newGameHumanVSComputer);
 		this.add(newGameComputerVSComputer);
 		this.add(exit);
+		this.add(howManyRounds);
 		
-		BtnListener newg = new BtnListener("ujjatek");
-		newGame.addActionListener(newg);
+		
+		BtnListener neweVe = new BtnListener("emberVember");
+		newGame.addActionListener(neweVe);
+		BtnListener neweVg = new BtnListener("emberVgep");
+		newGameHumanVSComputer.addActionListener(neweVg);
+		BtnListener newgVg = new BtnListener("gepVgep");
+		newGameComputerVSComputer.addActionListener(newgVg);
 		BtnListener egz = new BtnListener("exit");
 		exit.addActionListener(egz);
 		
@@ -105,19 +113,35 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 	//Ezt hívja meg a buttonlistener. ha az átadott string "toplista", a Toplista framet nyitja meg, magát bezárja, ha az átadott string "ujjatek", a Nev_megadas framet nyitja meg, magát bezárja.
 	//Ha az átadott string "exit", System.exit(0)-val kilép.
 	
-		Toplista topl = null;
 		Nev_megadas ujtk = null;
+		UjjatekEmberVsGep eVg = null;
+		UjjatekGepVsGep gVg = null;
 		
-		if(ide == "toplista")	{
-			topl = new Toplista();
-			this.setVisible(false);
-			topl.setVisible(true);
-		}
 		
-		if(ide == "ujjatek")  {
+		
+		if(ide == "emberVember")  {
 			ujtk = new Nev_megadas();
 			this.setVisible(false);
 			ujtk.setVisible(true);
+			
+		}
+		
+		if(ide == "emberVgep")  {
+			eVg = new UjjatekEmberVsGep();
+			this.setVisible(false);
+			eVg.setVisible(true);
+			
+		}
+		
+		if(ide == "gepVgep")  {
+			
+			String textfield = howManyRounds.getText();
+			
+			int param = Integer.parseInt(textfield);
+			
+			gVg = new UjjatekGepVsGep(param);
+			this.setVisible(false);
+			gVg.setVisible(true);
 			
 		}
 		if(ide == "exit") System.exit(0);

@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-public class Ujjatek extends JFrame{
+public class UjjatekEmberVsEmber extends JFrame{
 
 	List<String> lepesSorozat=new ArrayList<String>();
 	TreeNode Root=new TreeNode("root");
@@ -47,7 +47,7 @@ public class Ujjatek extends JFrame{
 	
 	//2dimenziós gombtömb.
 		JButton[][] tabla = new JButton[10][10];
-	
+	 
 	//Játékosok nevei.
 	private JLabel fkt = new JLabel("Fekete Játékos: "+ gameh.hanySotet());
 	private JLabel fhr = new JLabel("Fehér Játékos: "+ gameh.hanyVilagos());
@@ -56,12 +56,9 @@ public class Ujjatek extends JFrame{
 	
 	
 	
-	
 	private JButton vissza = new JButton("Vissza");
 	
 	private JLabel rossz_lepes = new JLabel("");
-	
-	
 	
 	
 	
@@ -94,10 +91,10 @@ public class Ujjatek extends JFrame{
 				
 			}			
 			if(korszamlalo%2==0){//Globális változó, ha páros, sotetLep, ha páratlan vilagosLep.
-				feketeComputer();
+				feketeHuman(x,y);
 			}
 			if(korszamlalo%2==1){  //gépi játékos	
-				feherComputer();
+				feherHuman(x,y);
 			}
 		}
 	} 
@@ -420,7 +417,7 @@ public class Ujjatek extends JFrame{
 		return part1+part2;
 	}
 	
-	public Ujjatek(){
+	public UjjatekEmberVsEmber(){
 	//Frame konstruktor. A frame mérete 1280x720, neve "Uj_jatek".
 		super("Uj_jatek");
 		korszamlalo=0;
@@ -577,11 +574,6 @@ public class Ujjatek extends JFrame{
 	
 
 	
-
-	
-	
-	
-		
 	
 	public int getFeherSc(){
 		

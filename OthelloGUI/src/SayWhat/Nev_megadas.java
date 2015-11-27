@@ -23,7 +23,7 @@ public class Nev_megadas extends JFrame {
 	private JTextField wht = new JTextField("Player 2");
 	private JButton vissza = new JButton("Vissza");
 	private JButton ok = new JButton("OK!");
-	public Ujjatek mehet = new Ujjatek();//létrehoz egy "Ujjatek" framet.
+	public UjjatekEmberVsEmber mehet = new UjjatekEmberVsEmber();//létrehoz egy "Ujjatek" framet.
 	
 	public  class BtnListener implements ActionListener{
 		
