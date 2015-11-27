@@ -20,7 +20,6 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 	private static final long serialVersionUID = 1L;
 	//3 gombból áll, "Új játék", "Toplista", "Kilépés"
 	private JButton newGame = new JButton("Ember ember ellen");
-	private JButton highScores = new JButton("Toplista");
 	private JButton newGameHumanVSComputer = new JButton("Ember a gép ellen");
 	private JButton newGameComputerVSComputer = new JButton("Gép a gép ellen");
 	private JButton exit = new JButton("Kilépés");

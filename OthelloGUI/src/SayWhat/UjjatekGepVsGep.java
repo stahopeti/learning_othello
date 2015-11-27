@@ -33,6 +33,7 @@ public class UjjatekGepVsGep extends JFrame{
 	TreeNode elozoElement=Root;
 	int howManyGames;
 	boolean vege = false;
+	int skip=0;
 
 	private static final long serialVersionUID = 1L;
 
@@ -139,13 +140,14 @@ public class UjjatekGepVsGep extends JFrame{
 		int y=0;
 		int lepett_e=0;
 		
-		System.out.println("Lehetséges lépések:");
+		System.out.println("Fekete Lehetséges lépések:");
 		for (int i=0;i<lehetsegesLepesek.size();i++){
 			System.out.println(lehetsegesLepesek.get(i));
 		}
 		
-		if (lehetsegesLepesek.size()==0){korszamlalo++;}         //ha nincs hova lépni, akkor passzolni kell
+		if (lehetsegesLepesek.size()==0){korszamlalo++;skip++;}         //ha nincs hova lépni, akkor passzolni kell
 		else{
+			skip=0;
 			String Lepes=feketeComputerLep(lehetsegesLepesek);    //kiszámolja, hogy hova kell lépnie
 			x=Character.getNumericValue(Lepes.charAt(0));
 			y=Character.getNumericValue(Lepes.charAt(1));
@@ -185,13 +187,14 @@ public class UjjatekGepVsGep extends JFrame{
 		int y=0;
 		int lepett_e=0;
 		
-		System.out.println("Lehetséges lépések:");
+		System.out.println("Fehér Lehetséges lépések:");
 		for (int i=0;i<lehetsegesLepesek.size();i++){
 			System.out.println(lehetsegesLepesek.get(i));
 		}
 		
-		if (lehetsegesLepesek.size()==0){korszamlalo++;}         //ha nincs hova lépni, akkor passzolni kell
+		if (lehetsegesLepesek.size()==0){korszamlalo++;skip++;}         //ha nincs hova lépni, akkor passzolni kell
 		else{
+			skip=0;
 			String Lepes=feherComputerLep(lehetsegesLepesek);    //kiszámolja, hogy hova kell lépnie
 			x=Character.getNumericValue(Lepes.charAt(0));
 			y=Character.getNumericValue(Lepes.charAt(1));													
@@ -760,7 +763,7 @@ public class UjjatekGepVsGep extends JFrame{
 			
 			if(korszamlalo%2==0 && !vege){ feketeComputer();}
 			else if(korszamlalo%2==1 && !vege){ feherComputer(); }
-			
+			if (skip>2){vege=true;}
 		}
 		System.out.println("egy jatek vege");
 		korszamlalo = 0;

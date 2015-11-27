@@ -33,6 +33,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 	List<String> lepesSorozat=new ArrayList<String>();
 	TreeNode Root=new TreeNode("root");
 	TreeNode elozoElement=Root;
+	int skip=0;
 
 	
 	private static final long serialVersionUID = 1L;
@@ -96,6 +97,14 @@ public class UjjatekEmberVsEmber extends JFrame{
 			if(korszamlalo%2==1){  //gépi játékos	
 				feherHuman(x,y);
 			}
+			if (skip>2){
+				try {
+					update();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 	} 
 	
@@ -157,8 +166,9 @@ public class UjjatekEmberVsEmber extends JFrame{
 			List<String> lehetsegesLepesek = new ArrayList<String>();     
 			lehetsegesLepesek=lehetsegesLepesLista();            //kigyûjtöm egy listába a lehetséges lépéseket
 			
-			if (lehetsegesLepesek.size()==0){korszamlalo++;}	 //ha nincs hova lépni, akkor passzolni kell
+			if (lehetsegesLepesek.size()==0){korszamlalo++; skip++;}	 //ha nincs hova lépni, akkor passzolni kell
 			else{
+				skip=0;
 				lepett_e = gameh.sotetForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 				if (lepett_e>0){
 					fabaSzur(x,y);
@@ -180,8 +190,9 @@ public class UjjatekEmberVsEmber extends JFrame{
 		List<String> lehetsegesLepesek = new ArrayList<String>();     
 		lehetsegesLepesek=lehetsegesLepesLista();            //kigyûjtöm egy listába a lehetséges lépéseket
 		
-		if (lehetsegesLepesek.size()==0){korszamlalo++;}	 //ha nincs hova lépni, akkor passzolni kell
+		if (lehetsegesLepesek.size()==0){korszamlalo++; skip++;}	 //ha nincs hova lépni, akkor passzolni kell
 		else{
+			skip=0;
 			lepett_e = gameh.vilagosForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 			if (lepett_e>0){
 				fabaSzur(x,y);
@@ -662,7 +673,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 		fhr.setText("Fehér Játékos: "+ gameh.hanyVilagos());
 		rossz_lepes.setText("");		
 		
-		if(gameh.hanyUres()==0 || gameh.hanySotet()==0 || gameh.hanyVilagos()==0){            //ha már nincs üres, vagy elfogyott az egyik játékos korongja
+		if(gameh.hanyUres()==0 || gameh.hanySotet()==0 || gameh.hanyVilagos()==0 || skip>2){            //ha már nincs üres, vagy elfogyott az egyik játékos korongja
 											
 			int allas = 0; // ha fekete nyert 0 ha fehér 1 ha döntetlen 2
 				
