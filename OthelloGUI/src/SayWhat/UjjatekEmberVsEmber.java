@@ -308,7 +308,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 			y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
 		}
 		else{
-			double TempMin=0.0;
+			double TempMin=1.0;
 			int TempPosIndex=0;
 			List<String> tmp = new ArrayList<String>();
 			tmp=lehetsegesLepesek;
@@ -319,11 +319,16 @@ public class UjjatekEmberVsEmber extends JFrame{
 				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
 					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
 						//TESZT
-						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMin);
-						if (gyerek.getWinRate()<0.5){
-							tmp.remove(i);				//kiveszem a listából
+						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMIN: " + TempMin);
+						if (gyerek.getWinRate()>0.5){
+							for (int j=0; j<lehetsegesLepesek.size(); j++){
+								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
+									tmp.remove(j);				//kiveszem a listából
+								}
+							}
+
 						}
-						else if (gyerek.getWinRate()<TempMin){				//ha benne van, akkor maxkeresés a WinRate-re
+						else if (gyerek.getWinRate()<=TempMin){				//ha benne van, akkor maxkeresés a WinRate-re
 							TempMin=gyerek.getWinRate();
 							TempPosIndex=i;
 						}
@@ -383,7 +388,11 @@ public class UjjatekEmberVsEmber extends JFrame{
 						//TESZT
 						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMax);
 						if (gyerek.getWinRate()<0.5){
-							tmp.remove(i);				//kiveszem a listából
+							for (int j=0; j<lehetsegesLepesek.size(); j++){
+								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
+									tmp.remove(j);				//kiveszem a listából
+								}
+							}
 						}
 						else if (gyerek.getWinRate()>TempMax){				//ha benne van, akkor maxkeresés a WinRate-re
 							TempMax=gyerek.getWinRate();

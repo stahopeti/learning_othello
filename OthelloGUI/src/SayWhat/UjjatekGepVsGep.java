@@ -4,13 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -192,7 +190,9 @@ public class UjjatekGepVsGep extends JFrame{
 			System.out.println(lehetsegesLepesek.get(i));
 		}
 		
-		if (lehetsegesLepesek.size()==0){korszamlalo++;}         //ha nincs hova lépni, akkor passzolni kell
+		if (lehetsegesLepesek.size()==0){
+			korszamlalo++;
+			}         //ha nincs hova lépni, akkor passzolni kell
 		else{
 			String Lepes=feherComputerLep(lehetsegesLepesek);    //kiszámolja, hogy hova kell lépnie
 			x=Character.getNumericValue(Lepes.charAt(0));
@@ -243,7 +243,7 @@ public class UjjatekGepVsGep extends JFrame{
 			y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
 		}
 		else{
-			double TempMin=0.0;
+			double TempMin=1.0;
 			int TempPosIndex=0;
 			List<String> tmp = new ArrayList<String>();
 			tmp=lehetsegesLepesek;
@@ -254,11 +254,15 @@ public class UjjatekGepVsGep extends JFrame{
 				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
 					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
 						//TESZT
-						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMin);
-						if (gyerek.getWinRate()<0.5){
-							tmp.remove(i);				//kiveszem a listából
+						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMIN: " + TempMin);
+						if (gyerek.getWinRate()>0.5){
+							for (int j=0; j<lehetsegesLepesek.size(); j++){
+								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
+									tmp.remove(j);				//kiveszem a listából
+								}
+							}
 						}
-						else if (gyerek.getWinRate()<TempMin){				//ha benne van, akkor maxkeresés a WinRate-re
+						else if (gyerek.getWinRate()<=TempMin){				//ha benne van, akkor maxkeresés a WinRate-re
 							TempMin=gyerek.getWinRate();
 							TempPosIndex=i;
 						}
@@ -318,7 +322,11 @@ public class UjjatekGepVsGep extends JFrame{
 						//TESZT
 						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMax);
 						if (gyerek.getWinRate()<0.5){
-							tmp.remove(i);				//kiveszem a listából
+							for (int j=0; j<lehetsegesLepesek.size(); j++){
+								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
+									tmp.remove(j);				//kiveszem a listából
+								}
+							}
 						}
 						else if (gyerek.getWinRate()>TempMax){				//ha benne van, akkor maxkeresés a WinRate-re
 							TempMax=gyerek.getWinRate();
@@ -354,7 +362,7 @@ public class UjjatekGepVsGep extends JFrame{
 	
 	public UjjatekGepVsGep(int param){
 		howManyGames = param;
-		System.out.println("Ennyit írtaqm be a izébe: "+howManyGames);
+		System.out.println("Ennyit írtam be a izébe: "+howManyGames);
 	//Frame konstruktor. A frame mérete 1280x720, neve "Uj_jatek".
 //		super("Uj_jatek");
 		korszamlalo=0;
@@ -762,8 +770,8 @@ public class UjjatekGepVsGep extends JFrame{
 		
 		while(!vege){
 			
-			if(korszamlalo%2==0){ feketeComputer();}
-			if(korszamlalo%2==1){ feherComputer(); }
+			if(korszamlalo%2==0 && !vege){ feketeComputer();}
+			else if(korszamlalo%2==1 && !vege){ feherComputer(); }
 			
 		}
 		System.out.println("egy jatek vege");
