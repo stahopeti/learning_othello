@@ -64,7 +64,7 @@ public class Asztal {
 	
 	//forgató függvények
 	int sotetForgat(int x, int y,boolean test){//sötét lépésekor ez vizsgálja, hogy megfelelõ e a lépés
-		if (!test)System.out.println("Sötét jön");
+		//if (!test)System.out.println("Sötét jön");
 		
 		int szamlalo = 0;
 		if(palya[x][y].getSzin()=='X' || palya[x][y].getSzin()=='O' ) return 0;
@@ -81,7 +81,7 @@ public class Asztal {
 		szamlalo+=atloJOBBFEL(x,y,'X',test);
 		szamlalo+=atloJOBBLE(x,y,'X',test);
 		
-		if (!test)System.out.println("Lépéscount: "+szamlalo);
+		//if (!test)System.out.println("Lépéscount: "+szamlalo);
 		
 		if(szamlalo>0 && !test) setSotet(palya[x][y]);
 		return szamlalo;
@@ -90,7 +90,7 @@ public class Asztal {
 	
 	
 	int vilagosForgat(int x, int y,boolean test){//világos lépésekor ez vizsgálja, hogy megfelelõ e a lépés
-		if (!test)System.out.println("Világos jön");
+		//if (!test)System.out.println("Világos jön");
 		
 		
 		int szamlalo = 0;
@@ -109,7 +109,6 @@ public class Asztal {
 		szamlalo+=atloJOBBFEL(x,y,'O',test);
 		szamlalo+=atloJOBBLE(x,y,'O',test);
 		
-		if (!test)System.out.println("Lépéscount: "+szamlalo);
 		
 		if(szamlalo>0 && !test) setVilagos(palya[x][y]);
 		return szamlalo;

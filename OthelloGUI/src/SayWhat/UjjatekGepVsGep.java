@@ -140,10 +140,10 @@ public class UjjatekGepVsGep extends JFrame{
 		int y=0;
 		int lepett_e=0;
 		
-		System.out.println("Fekete Lehetséges lépések:");
-		for (int i=0;i<lehetsegesLepesek.size();i++){
-			System.out.println(lehetsegesLepesek.get(i));
-		}
+		//System.out.println("Fekete Lehetséges lépések:");
+		//for (int i=0;i<lehetsegesLepesek.size();i++){
+		//	System.out.println(lehetsegesLepesek.get(i));
+		//}
 		
 		if (lehetsegesLepesek.size()==0){korszamlalo++;skip++;}         //ha nincs hova lépni, akkor passzolni kell
 		else{
@@ -162,20 +162,20 @@ public class UjjatekGepVsGep extends JFrame{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.println("updateolva");//tesztkimenet konzolra
-				gameh.asztalKiir();
+				//System.out.println("updateolva");//tesztkimenet konzolra
+				//gameh.asztalKiir();
 			}
-			System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
+			//System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
 			if(lepett_e==0) {
 				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
 			}				
 			
-			System.out.println("Lépések sorozata:");
-			for (int i=0;i<lepesSorozat.size();i++){
-				System.out.println(lepesSorozat.get(i));
-			}
+			//System.out.println("Lépések sorozata:");
+			//for (int i=0;i<lepesSorozat.size();i++){
+			//	System.out.println(lepesSorozat.get(i));
+			//}
 		
-			System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
+			//System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
 		}
 	}
 
@@ -187,10 +187,10 @@ public class UjjatekGepVsGep extends JFrame{
 		int y=0;
 		int lepett_e=0;
 		
-		System.out.println("Fehér Lehetséges lépések:");
-		for (int i=0;i<lehetsegesLepesek.size();i++){
-			System.out.println(lehetsegesLepesek.get(i));
-		}
+		//System.out.println("Fehér Lehetséges lépések:");
+		//for (int i=0;i<lehetsegesLepesek.size();i++){
+		//	System.out.println(lehetsegesLepesek.get(i));
+		//}
 		
 		if (lehetsegesLepesek.size()==0){korszamlalo++;skip++;}         //ha nincs hova lépni, akkor passzolni kell
 		else{
@@ -209,15 +209,15 @@ public class UjjatekGepVsGep extends JFrame{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.println("updateolva");//tesztkimenet konzolra
-				gameh.asztalKiir();
+				//System.out.println("updateolva");//tesztkimenet konzolra
+				//gameh.asztalKiir();
 			}
 	
-			System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
+			//System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
 			if(lepett_e==0) {
 				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 							
 						
-				System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
+				//System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
 			}
 		}	
 	}
@@ -228,10 +228,10 @@ public class UjjatekGepVsGep extends JFrame{
 		int y;
 		
 		if (Gyerekek.length==0){                               //ha nincs gyereke akkor mindegyik WinRate 0.5 tehát mehet a random
-			System.out.println("Nincs még gyereke");
+			//System.out.println("Nincs még gyereke");
 			Random rand = new Random(); 
 			int randomValue = rand.nextInt(lehetsegesLepesek.size());                //veszek egy random számot
-			System.out.println("RANDOM: "+randomValue);
+			//System.out.println("RANDOM: "+randomValue);
 			
 			x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
 			y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
@@ -242,13 +242,13 @@ public class UjjatekGepVsGep extends JFrame{
 			List<String> tmp = new ArrayList<String>();
 			tmp=lehetsegesLepesek;
 			
-			System.out.println("TESZT-FEHÉR_COMPUTER_LÉP");
+			//System.out.println("FEHÉR_COMPUTER_LÉP");
 			
 			for (TreeNode gyerek : Gyerekek){                   		//végigmegyek a gyerekeken            		
 				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
 					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
 						//TESZT
-						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMIN: " + TempMin);
+						//System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMIN: " + TempMin);
 						if (gyerek.getWinRate()>0.5){
 							for (int j=0; j<lehetsegesLepesek.size(); j++){
 								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
@@ -284,7 +284,7 @@ public class UjjatekGepVsGep extends JFrame{
 		}
 		String part1=Integer.toString(x);
 		String part2=Integer.toString(y);
-		System.out.println("Választott lépés: " + part1+part2);
+		//System.out.println("Választott lépés: " + part1+part2);
 		return part1+part2;
 	}
 
@@ -294,10 +294,10 @@ public class UjjatekGepVsGep extends JFrame{
 		int y;
 		
 		if (Gyerekek.length==0){                               //ha nincs gyereke akkor mindegyik WinRate 0.5 tehát mehet a random
-			System.out.println("Nincs még gyereke");
+			//System.out.println("Nincs még gyereke");
 			Random rand = new Random(); 
 			int randomValue = rand.nextInt(lehetsegesLepesek.size());                //veszek egy random számot
-			System.out.println("RANDOM: "+randomValue);
+			//System.out.println("RANDOM: "+randomValue);
 			
 			x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
 			y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
@@ -308,13 +308,13 @@ public class UjjatekGepVsGep extends JFrame{
 			List<String> tmp = new ArrayList<String>();
 			tmp=lehetsegesLepesek;
 			
-			System.out.println("TESZT-FEKETE_COMPUTER_LÉP");
+			//System.out.println("FEKETE_COMPUTER_LÉP");
 			
 			for (TreeNode gyerek : Gyerekek){                   		//végigmegyek a gyerekeken            		
 				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
 					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
 						//TESZT
-						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMax);
+						//System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMax);
 						if (gyerek.getWinRate()<0.5){
 							for (int j=0; j<lehetsegesLepesek.size(); j++){
 								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
@@ -350,13 +350,13 @@ public class UjjatekGepVsGep extends JFrame{
 		}
 		String part1=Integer.toString(x);
 		String part2=Integer.toString(y);
-		System.out.println("Választott lépés: " + part1+part2);
+		//System.out.println("Választott lépés: " + part1+part2);
 		return part1+part2;
 	}
 	
 	public UjjatekGepVsGep(int param){
 		howManyGames = param;
-		System.out.println("Ennyit írtam be a izébe: "+howManyGames);
+		System.out.println("Ennyi menetet kell lejátszanom: "+howManyGames);
 	//Frame konstruktor. A frame mérete 1280x720, neve "Uj_jatek".
 //		super("Uj_jatek");
 		korszamlalo=0;
@@ -454,7 +454,7 @@ public class UjjatekGepVsGep extends JFrame{
 		this.add(fhr);
 		this.setResizable(false);
 		this.pack();
-		System.out.println("jatekhivas elõtt állunk");
+		System.out.println("Játékhívás elõtt állunk");
 		try {
 			for(int i=0;i<howManyGames;i++){	
 				
@@ -501,7 +501,7 @@ public class UjjatekGepVsGep extends JFrame{
 			    }
 
 				jatek();
-				System.out.println((i+1) + "-edik játék vége");
+				System.out.println((i+1) + ". játék vége");
 			}
 		
 		
@@ -565,7 +565,7 @@ public class UjjatekGepVsGep extends JFrame{
 		} catch(IOException ex) { 
 		} catch(ClassNotFoundException ex) { 
 		}
-		System.out.println("\n\nSerializált visszatöltve\n\n");
+		//System.out.println("\n\nSerializált visszatöltve\n\n");
 		return temp;
 	}
 	
@@ -608,10 +608,10 @@ public class UjjatekGepVsGep extends JFrame{
 			String nyertes = "Döntetlen";
 				
 			System.out.println("A játéknak vége!");
-			System.out.println("A játék végén: Lépések sorozata:");
-			for (int i=0;i<lepesSorozat.size();i++){
-				System.out.println(lepesSorozat.get(i));
-			}
+			//System.out.println("A játék végén: Lépések sorozata:");
+			//for (int i=0;i<lepesSorozat.size();i++){
+			//	System.out.println(lepesSorozat.get(i));
+			//}
 														
 			
 			if(feketeSc > feherSc) {//Ha sötétnek több pontja van.
@@ -619,12 +619,13 @@ public class UjjatekGepVsGep extends JFrame{
 				rossz_lepes.setText(fekete.getText()+ " nyert!"); 
 				allas = 0;
 				nyertes = fekete.getText();
+				System.out.println("FEKETE NYERT: " + nyertes);
 				
 				for (int i=0;i<lepesSorozat.size();i++){
-					System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
+					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incWinCount();
 					elozoElement.setWinRate();
-					System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
+					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 					
 				}
@@ -635,17 +636,22 @@ public class UjjatekGepVsGep extends JFrame{
 				rossz_lepes.setText(feher.getText()+ " nyert!");
 				allas = 1;
 				nyertes = feher.getText();
+				System.out.println("FEHÉR NYERT: " + nyertes);
 				
 				for (int i=0;i<lepesSorozat.size();i++){
-					System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
+					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incLoseCount();
 					elozoElement.setWinRate();
-					System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
+					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 				}
 				
 			}
-			if(feherSc==feketeSc) {rossz_lepes.setText("Döntetlen!"); allas = 2;}//Ha egyenlõ az állás
+			if(feherSc==feketeSc) {
+				rossz_lepes.setText("Döntetlen!");
+				allas = 2; 
+				System.out.println("DÖNTETLEN");
+				}//Ha egyenlõ az állás
 			
 			System.out.println("fekete: "  + feketeSc + "feher: "+ feherSc);//teszt kimenet konzolra
 			    
@@ -666,7 +672,7 @@ public class UjjatekGepVsGep extends JFrame{
 			
 			for(int i = 0;i<lista.nevek_listaja.size(); i++){//tesztkimenet konzolra
 				
-				System.out.println(lista.nevek_listaja.get(i).name + " : " + lista.nevek_listaja.get(i).score);
+				//System.out.println(lista.nevek_listaja.get(i).name + " : " + lista.nevek_listaja.get(i).score);
 				
 			}
 			
@@ -689,7 +695,7 @@ public class UjjatekGepVsGep extends JFrame{
 						szamolo++;
 					}
 
-					System.out.println("FEHÉR NYERT: " + nyertes);
+
 					
 				}
 				
@@ -697,7 +703,7 @@ public class UjjatekGepVsGep extends JFrame{
 			}
 			
 			
-			System.out.println("volt hasonló: " + szamolo);
+			//System.out.println("volt hasonló: " + szamolo);
 			if(szamolo == 0){//új bejegyzés a toplistába
 				
 				if(allas == 0){
@@ -723,7 +729,7 @@ public class UjjatekGepVsGep extends JFrame{
 				String temp = lista.nevek_listaja.get(i).name + "_" + lista.nevek_listaja.get(i).score;
 				kiir.write(temp);
 				kiir.newLine();
-				System.out.println(lista.nevek_listaja.get(i).name + "_" + lista.nevek_listaja.get(i).score);
+				//System.out.println(lista.nevek_listaja.get(i).name + "_" + lista.nevek_listaja.get(i).score);
 				
 			}
 			
@@ -737,7 +743,7 @@ public class UjjatekGepVsGep extends JFrame{
 			
 			for(int i = 0;i<lol.nevek_listaja.size(); i++){
 				
-				System.out.println(" " + lol.nevek_listaja.get(i).name + "_" + lol.nevek_listaja.get(i).score);//teszt kimenet konzolra
+				//System.out.println(" " + lol.nevek_listaja.get(i).name + "_" + lol.nevek_listaja.get(i).score);//teszt kimenet konzolra
 				
 			}
 			
