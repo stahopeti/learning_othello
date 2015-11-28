@@ -29,8 +29,8 @@ import javax.swing.border.LineBorder;
 public class UjjatekGepVsGep extends JFrame{
 
 	List<String> lepesSorozat=new ArrayList<String>();
-	TreeNode Root=new TreeNode("root");
-	TreeNode elozoElement=Root;
+	TreeNode Root;
+	TreeNode elozoElement;
 	int howManyGames;
 	boolean vege = false;
 	int skip=0;
@@ -455,53 +455,69 @@ public class UjjatekGepVsGep extends JFrame{
 		this.setResizable(false);
 		this.pack();
 		System.out.println("Játékhívás elõtt állunk");
+		
+		
+		//Adatbázis betöltése
+		TreeNode serTreeNode = null;
+	    try
+	    {
+	       FileInputStream fileIn = new FileInputStream("Tree.dat");
+	       ObjectInputStream in = new ObjectInputStream(fileIn);
+	       serTreeNode = (TreeNode) in.readObject();
+	       in.close();
+	       fileIn.close();
+		   Root=serTreeNode;
+		   elozoElement=Root;
+		   System.out.println("Sikerült az adatbázis betöltése");		   
+		   
+		   //Tesztelgetéshez..  
+//			TreeNode[] TestRoot=Root.getChildren();
+//			TreeNode[] TestElsoGyerekGyereke=Root.getChildren()[1].getChildren();
+//			TreeNode asd=TestElsoGyerekGyereke[0];
+//			TreeNode[] wtf=asd.getChildren();
+//			
+//			System.out.println("Tesztelési célokra:\nRoot Gyerekei:");
+//			for (int i=0;i<TestRoot.length;i++){
+//				System.out.println(TestRoot[i].getPosition() + " Winrate: " + TestRoot[i].getWinRate());
+//			}
+//			System.out.println("Most épp a Root 2 gyerekének gyerekei:");
+//			for (int i=0;i<TestElsoGyerekGyereke.length;i++){
+//				System.out.println(TestElsoGyerekGyereke[i].getPosition());
+//			}
+//			System.out.println("Most épp a Root 2 gyerekének az elsõ gyerekének a gyerekei:");
+//			for (int i=0;i<wtf.length;i++){
+//				System.out.println(wtf[i].getPosition());
+//			}
+			
+	    }catch(IOException e)
+	    {
+	       e.printStackTrace();
+		   System.out.println("Nem sikerült az adatbázis betöltése");
+		   Root=new TreeNode("root");
+		   elozoElement=Root;
+		   
+	    }catch(ClassNotFoundException c)
+	    {
+	       System.out.println("Tree class not found");
+	       c.printStackTrace();
+	    }
+		
+		
 		try {
 			for(int i=0;i<howManyGames;i++){	
-				
-				//Adatbázis betöltése
-				TreeNode serTreeNode = null;
-			    try
-			    {
-			       FileInputStream fileIn = new FileInputStream("Tree.dat");
-			       ObjectInputStream in = new ObjectInputStream(fileIn);
-			       serTreeNode = (TreeNode) in.readObject();
-			       in.close();
-			       fileIn.close();
-				   Root=serTreeNode;
-				   elozoElement=Root;
-				   System.out.println("Sikerült az adatbázis betöltése");		   
-				   
-				   //Tesztelgetéshez..  
-//					TreeNode[] TestRoot=Root.getChildren();
-//					TreeNode[] TestElsoGyerekGyereke=Root.getChildren()[1].getChildren();
-//					TreeNode asd=TestElsoGyerekGyereke[0];
-//					TreeNode[] wtf=asd.getChildren();
-//					
-//					System.out.println("Tesztelési célokra:\nRoot Gyerekei:");
-//					for (int i=0;i<TestRoot.length;i++){
-//						System.out.println(TestRoot[i].getPosition() + " Winrate: " + TestRoot[i].getWinRate());
-//					}
-//					System.out.println("Most épp a Root 2 gyerekének gyerekei:");
-//					for (int i=0;i<TestElsoGyerekGyereke.length;i++){
-//						System.out.println(TestElsoGyerekGyereke[i].getPosition());
-//					}
-//					System.out.println("Most épp a Root 2 gyerekének az elsõ gyerekének a gyerekei:");
-//					for (int i=0;i<wtf.length;i++){
-//						System.out.println(wtf[i].getPosition());
-//					}
-					
-			    }catch(IOException e)
-			    {
-			       e.printStackTrace();
-				   System.out.println("Nem sikerült az adatbázis betöltése");
-			    }catch(ClassNotFoundException c)
-			    {
-			       System.out.println("Tree class not found");
-			       c.printStackTrace();
-			    }
-
 				jatek();
 				System.out.println((i+1) + ". játék vége");
+			}
+			
+			try{																		//szerializálom a Tree-t
+				FileOutputStream fileOut = new FileOutputStream("Tree.dat");
+				ObjectOutputStream out = new ObjectOutputStream(fileOut);
+				out.writeObject(Root);
+				out.close();
+				fileOut.close();
+				System.out.printf("Serialized data is saved in Tree.dat\n");
+			}catch(IOException i){
+			    i.printStackTrace();
 			}
 		
 		
@@ -656,18 +672,6 @@ public class UjjatekGepVsGep extends JFrame{
 			System.out.println("fekete: "  + feketeSc + "feher: "+ feherSc);//teszt kimenet konzolra
 			    
 			
-			
-						
-			try{																		//szerializálom a Tree-t
-				FileOutputStream fileOut = new FileOutputStream("Tree.dat");
-				ObjectOutputStream out = new ObjectOutputStream(fileOut);
-				out.writeObject(Root);
-				out.close();
-				fileOut.close();
-				System.out.printf("Serialized data is saved in Tree.dat\n");
-			}catch(IOException i){
-			    i.printStackTrace();
-			}
 						
 			
 			for(int i = 0;i<lista.nevek_listaja.size(); i++){//tesztkimenet konzolra
@@ -779,7 +783,6 @@ public class UjjatekGepVsGep extends JFrame{
 		feketeSc=0;
 
 		lepesSorozat=new ArrayList<String>();
-		Root=new TreeNode("root");
 		elozoElement=Root;
 	}
 	
