@@ -4,10 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,13 +48,7 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 		this.setSize(1280, 720);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		try {
-			this.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("gandalfthepug.jpg")))));
-		} catch (IOException e) {
-			
-			System.out.print("Image doesnt exist");
-		}
-		
+		this.setContentPane(new JLabel(new ImageIcon(getClass().getResource("/gandalfthepug.jpg"))));
 		
 		
 		

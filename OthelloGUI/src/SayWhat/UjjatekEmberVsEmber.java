@@ -4,21 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -225,12 +218,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 		this.setSize(1280, 720);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		try {
-			this.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("gandalfthepug.jpg")))));
-		} catch (IOException e) {
-			
-			System.out.print("Image doesnt exist");
-		}
+		this.setContentPane(new JLabel(new ImageIcon(getClass().getResource("/gandalfthepug.jpg"))));
 		
 		//palya
 		vissza.setLocation(1130,670);
@@ -287,13 +275,13 @@ public class UjjatekEmberVsEmber extends JFrame{
 			for(int j=1;j<9;j++){
 				if(gameh.palya[i][j].getSzin()=='-'){
 					tabla[i][j] = new JButton();
-					tabla[i][j].setIcon(new ImageIcon("nincs_korong.jpg"));
+					tabla[i][j].setIcon(new ImageIcon((getClass().getResource("/nincs_korong.jpg"))));
 				}
 				if(gameh.palya[i][j].getSzin()=='X'){
-					tabla[i][j] = new JButton(new ImageIcon("fekete_korong.jpg"));
+					tabla[i][j] = new JButton(new ImageIcon((getClass().getResource("/fekete_korong.jpg"))));
 				}
 				if(gameh.palya[i][j].getSzin()=='O'){
-					tabla[i][j] = new JButton(new ImageIcon("feher_korong.jpg"));
+					tabla[i][j] = new JButton(new ImageIcon((getClass().getResource("/feher_korong.jpg"))));
 				}
 								
 				tabla[i][j].setLocation(sorban,oszlopban);
@@ -361,7 +349,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 			
 	    }catch(IOException i)
 	    {
-	       i.printStackTrace();
+	      // i.printStackTrace();
 		   System.out.println("Nem sikerült az adatbázis betöltése");
 	    }catch(ClassNotFoundException c)
 	    {
@@ -392,7 +380,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 	
 	public static void serializalas(final TOPLIST param){
 		
-		
+		/*
 		try {
 			FileOutputStream f = new FileOutputStream("SERIALIZALT.dat");
 			ObjectOutputStream out = new ObjectOutputStream(f);
@@ -408,11 +396,13 @@ public class UjjatekEmberVsEmber extends JFrame{
 			e.printStackTrace();
 		}
 		
+		*/
 		
 	}
 	
 
 	public static TOPLIST deserializalas() {
+		/*
 		TOPLIST temp = new TOPLIST();
 		
 		try {
@@ -425,6 +415,8 @@ public class UjjatekEmberVsEmber extends JFrame{
 		}
 		//System.out.println("\n\nSerializált visszatöltve\n\n");
 		return temp;
+		*/
+		return null;
 	}
 	
 	
@@ -436,13 +428,13 @@ public class UjjatekEmberVsEmber extends JFrame{
 		for(int i = 1; i<9;i++){//Végig iterál a pályán, frissíti a megjelenítést.
 			for(int j = 1;j<9;j++){
 				if(gameh.palya[i][j].getSzin()=='-'){
-					tabla[i][j].setIcon(new ImageIcon("nincs_korong.jpg"));
+					tabla[i][j].setIcon(new ImageIcon(getClass().getResource("/nincs_korong.jpg")));
 				}
 				if(gameh.palya[i][j].getSzin()=='X'){
-					tabla[i][j].setIcon(new ImageIcon("fekete_korong.jpg"));
+					tabla[i][j].setIcon(new ImageIcon(getClass().getResource("/fekete_korong.jpg")));
 				}
 				if(gameh.palya[i][j].getSzin()=='O'){
-					tabla[i][j].setIcon(new ImageIcon("feher_korong.jpg"));
+					tabla[i][j].setIcon(new ImageIcon(getClass().getResource("/feher_korong.jpg")));
 				}
 				
 			}
@@ -582,6 +574,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 				
 			}
 			
+			/*
 			BufferedWriter kiir = new BufferedWriter(new FileWriter("toplista.txt"));//átírjuk a toplistát
 			for(int i = 0;i<lista.nevek_listaja.size(); i++){
 				
@@ -605,7 +598,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 				//System.out.println(" " + lol.nevek_listaja.get(i).name + "_" + lol.nevek_listaja.get(i).score);//teszt kimenet konzolra
 				
 			}
-			
+			*/
 		}
 		
 		
@@ -624,7 +617,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 	
 	public void jatek() throws NumberFormatException, IOException{
 		
-		
+		/*
 		BufferedReader beolvas = new BufferedReader(new FileReader("toplista.txt"));
 		String line = "";
 		
@@ -641,7 +634,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 		}
 		
 		beolvas.close();
-		
+		*/
 		
 		for(int i=1;i<9;i++){
 			for(int j=1;j<9;j++){

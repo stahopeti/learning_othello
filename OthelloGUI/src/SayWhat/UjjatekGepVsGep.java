@@ -4,12 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -363,12 +358,7 @@ public class UjjatekGepVsGep extends JFrame{
 		this.setSize(1280, 720);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		try {
-			this.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("gandalfthepug.jpg")))));
-		} catch (IOException e) {
-			
-			System.out.print("Image doesnt exist");
-		}
+		this.setContentPane(new JLabel(new ImageIcon((getClass().getResource("/gandalfthepug.jpg")))));
 		
 		//palya
 		vissza.setLocation(1130,670);
@@ -425,13 +415,13 @@ public class UjjatekGepVsGep extends JFrame{
 			for(int j=1;j<9;j++){
 				if(gameh.palya[i][j].getSzin()=='-'){
 					tabla[i][j] = new JButton();
-					tabla[i][j].setIcon(new ImageIcon("nincs_korong.jpg"));
+					tabla[i][j].setIcon(new ImageIcon((getClass().getResource("/nincs_korong.jpg"))));
 				}
 				if(gameh.palya[i][j].getSzin()=='X'){
-					tabla[i][j] = new JButton(new ImageIcon("fekete_korong.jpg"));
+					tabla[i][j] = new JButton(new ImageIcon((getClass().getResource("/fekete_korong.jpg"))));
 				}
 				if(gameh.palya[i][j].getSzin()=='O'){
-					tabla[i][j] = new JButton(new ImageIcon("feher_korong.jpg"));
+					tabla[i][j] = new JButton(new ImageIcon((getClass().getResource("/feher_korong.jpg"))));
 				}
 								
 				tabla[i][j].setLocation(sorban,oszlopban);
@@ -491,7 +481,7 @@ public class UjjatekGepVsGep extends JFrame{
 			
 	    }catch(IOException e)
 	    {
-	       e.printStackTrace();
+	       //e.printStackTrace();
 		   System.out.println("Nem sikerült az adatbázis betöltése");
 		   Root=new TreeNode("root");
 		   elozoElement=Root;
@@ -549,7 +539,7 @@ public class UjjatekGepVsGep extends JFrame{
 	
 	
 	public static void serializalas(final TOPLIST param){
-		
+		/*
 		
 		try {
 			FileOutputStream f = new FileOutputStream("SERIALIZALT.dat");
@@ -566,11 +556,12 @@ public class UjjatekGepVsGep extends JFrame{
 			e.printStackTrace();
 		}
 		
-		
+		*/
 	}
 	
 
 	public static TOPLIST deserializalas() {
+		/*
 		TOPLIST temp = new TOPLIST();
 		
 		try {
@@ -583,6 +574,8 @@ public class UjjatekGepVsGep extends JFrame{
 		}
 		//System.out.println("\n\nSerializált visszatöltve\n\n");
 		return temp;
+		*/
+		return null;
 	}
 	
 	
@@ -594,13 +587,13 @@ public class UjjatekGepVsGep extends JFrame{
 		for(int i = 1; i<9;i++){//Végig iterál a pályán, frissíti a megjelenítést.
 			for(int j = 1;j<9;j++){
 				if(gameh.palya[i][j].getSzin()=='-'){
-					tabla[i][j].setIcon(new ImageIcon("nincs_korong.jpg"));
+					tabla[i][j].setIcon(new ImageIcon((getClass().getResource("/nincs_korong.jpg"))));
 				}
 				if(gameh.palya[i][j].getSzin()=='X'){
-					tabla[i][j].setIcon(new ImageIcon("fekete_korong.jpg"));
+					tabla[i][j].setIcon(new ImageIcon((getClass().getResource("/fekete_korong.jpg"))));
 				}
 				if(gameh.palya[i][j].getSzin()=='O'){
-					tabla[i][j].setIcon(new ImageIcon("feher_korong.jpg"));
+					tabla[i][j].setIcon(new ImageIcon((getClass().getResource("/feher_korong.jpg"))));
 				}
 				
 			}
@@ -615,7 +608,7 @@ public class UjjatekGepVsGep extends JFrame{
 		if(gameh.hanyUres()==0 || gameh.hanySotet()==0 || gameh.hanyVilagos()==0){            //ha már nincs üres, vagy elfogyott az egyik játékos korongja
 											
 			vege = true;
-			int allas = 0; // ha fekete nyert 0 ha fehér 1 ha döntetlen 2
+			//int allas = 0; // ha fekete nyert 0 ha fehér 1 ha döntetlen 2
 				
 			//pontszám beállítása
 			feherSc = gameh.hanyVilagos();
@@ -633,7 +626,7 @@ public class UjjatekGepVsGep extends JFrame{
 			if(feketeSc > feherSc) {//Ha sötétnek több pontja van.
 				
 				rossz_lepes.setText(fekete.getText()+ " nyert!"); 
-				allas = 0;
+				//allas = 0;
 				nyertes = fekete.getText();
 				System.out.println("FEKETE NYERT: " + nyertes);
 				
@@ -650,7 +643,7 @@ public class UjjatekGepVsGep extends JFrame{
 			}
 			if(feketeSc < feherSc) {//Ha világosnak több pontja van.
 				rossz_lepes.setText(feher.getText()+ " nyert!");
-				allas = 1;
+				//allas = 1;
 				nyertes = feher.getText();
 				System.out.println("FEHÉR NYERT: " + nyertes);
 				
@@ -665,13 +658,13 @@ public class UjjatekGepVsGep extends JFrame{
 			}
 			if(feherSc==feketeSc) {
 				rossz_lepes.setText("Döntetlen!");
-				allas = 2; 
+				//allas = 2; 
 				System.out.println("DÖNTETLEN");
 				}//Ha egyenlõ az állás
 			
 			System.out.println("fekete: "  + feketeSc + "feher: "+ feherSc);//teszt kimenet konzolra
 			    
-			
+			/*
 						
 			
 			for(int i = 0;i<lista.nevek_listaja.size(); i++){//tesztkimenet konzolra
@@ -750,7 +743,7 @@ public class UjjatekGepVsGep extends JFrame{
 				//System.out.println(" " + lol.nevek_listaja.get(i).name + "_" + lol.nevek_listaja.get(i).score);//teszt kimenet konzolra
 				
 			}
-			
+			*/
 		}
 		
 		
