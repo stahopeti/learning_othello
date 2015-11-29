@@ -4,10 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -831,6 +829,7 @@ public class UjjatekEmberVsGep extends JFrame{
 	
 	public void jatek() throws NumberFormatException, IOException{
 		
+		/*
 		
 		BufferedReader beolvas = new BufferedReader(new FileReader("toplista.txt"));
 		String line = "";
@@ -848,7 +847,7 @@ public class UjjatekEmberVsGep extends JFrame{
 		}
 		
 		beolvas.close();
-		
+		*/
 		
 		for(int i=1;i<9;i++){
 			for(int j=1;j<9;j++){
