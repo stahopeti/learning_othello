@@ -27,7 +27,7 @@ public class UjjatekEmberVsGep extends JFrame{
 	TreeNode Root=new TreeNode("root");
 	TreeNode elozoElement=Root;
 	int skip=0;
-
+	int jatekos;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -75,31 +75,63 @@ public class UjjatekEmberVsGep extends JFrame{
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int x=0,y=0;//ezeket adja tovább koordinátaként a sotetForgat vagy vilagosForgat függvénynek					
 			
-			for(int i=1;i<9;i++){
-				for(int j=1;j<9;j++){				
-					if(e.getSource()==tabla[i][j]){ //Megvizsgálja, a 2d gombtömb melyikére kattintottunk.						
-						System.out.println("A lenyomott gomb: x:"+ (i)+" y:"+(j));//teszt kimenet konzolra
-						x=i; y=j;
+			if (jatekos==0){
+				
+				int x=0,y=0;//ezeket adja tovább koordinátaként a sotetForgat vagy vilagosForgat függvénynek					
+				
+				for(int i=1;i<9;i++){
+					for(int j=1;j<9;j++){				
+						if(e.getSource()==tabla[i][j]){ //Megvizsgálja, a 2d gombtömb melyikére kattintottunk.						
+							System.out.println("A lenyomott gomb: x:"+ (i)+" y:"+(j));//teszt kimenet konzolra
+							x=i; y=j;
+						}
+					}
+					
+				}			
+				if(korszamlalo%2==0){//Globális változó, ha páros, sotetLep, ha páratlan vilagosLep.
+					feketeHuman(x,y);
+				}
+				if(korszamlalo%2==1){  //gépi játékos	
+					feherComputer();
+				}
+				if(skip>2){
+					try {
+						update();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+			else{
+				int x=0,y=0;//ezeket adja tovább koordinátaként a sotetForgat vagy vilagosForgat függvénynek					
+				
+				for(int i=1;i<9;i++){
+					for(int j=1;j<9;j++){				
+						if(e.getSource()==tabla[i][j]){ //Megvizsgálja, a 2d gombtömb melyikére kattintottunk.						
+							System.out.println("A lenyomott gomb: x:"+ (i)+" y:"+(j));//teszt kimenet konzolra
+							x=i; y=j;
+						}
+					}
+					
+				}			
+				if(korszamlalo%2==0){//Globális változó, ha páros, sotetLep, ha páratlan vilagosLep.
+					feketeComputer();
+				}
+				if(korszamlalo%2==1){  //gépi játékos	
+					feherHuman(x,y);
+				}
+				if(skip>2){
+					try {
+						update();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
 				}
 				
-			}			
-			if(korszamlalo%2==0){//Globális változó, ha páros, sotetLep, ha páratlan vilagosLep.
-				feketeHuman(x,y);
-			}
-			if(korszamlalo%2==1){  //gépi játékos	
-				feherComputer();
-			}
-			if(skip>2){
-				try {
-					update();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
-			}
 		}
 	} 
 	
@@ -107,7 +139,7 @@ public class UjjatekEmberVsGep extends JFrame{
 		List<String> lepesek = new ArrayList<String>();
 		
 		if(korszamlalo%2==0){       						       //külön fehér, külön fekete játékos esetén
-			for(int i=1;i<9;i++){                   		       //bevégigmegyek a tábla összes elemén (ezen lehet talán optimalizálni késõbb)
+			for(int i=1;i<9;i++){                   		       //bevégigmegyek a tábla összes elemén 
 				for(int j=1;j<9;j++){
 						if (0<gameh.sotetForgat(i,j,true)){             //megvizsgálom, hogy a lépés lehetséges-e
 							String part1=Integer.toString(i);
@@ -142,7 +174,7 @@ public class UjjatekEmberVsGep extends JFrame{
 	    
 		TreeNode[] gyerekek=elozoElement.getChildren();      //az elõzõ elemnek megnézem a gyerekeit
 		
-		//Lehet h az az elem már korábban be volt szúrva, tehát lehetnek gyerekei, az is lehet h friss ez az ág és nincs is még gyereke.
+//Lehet h az az elem már korábban be volt szúrva, tehát lehetnek gyerekei, az is lehet h friss ez az ág és nincs is még gyereke.
 		for (TreeNode i : gyerekek){							//megnézem, hogy a szülõnek van-e már ilyen gyereke
 			if (i.getPosition().equals(aktualis.getPosition())){
 	    		elozoElement=i;                          //ha van már ilyen gyereke, akkor nem kell beszúrnom
@@ -299,10 +331,8 @@ public class UjjatekEmberVsGep extends JFrame{
 		int y;
 		
 		if (Gyerekek.length==0){                               //ha nincs gyereke akkor mindegyik WinRate 0.5 tehát mehet a random
-			//System.out.println("Nincs még gyereke");
 			Random rand = new Random(); 
 			int randomValue = rand.nextInt(lehetsegesLepesek.size());                //veszek egy random számot
-			//System.out.println("RANDOM: "+randomValue);
 			
 			x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
 			y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
@@ -313,13 +343,9 @@ public class UjjatekEmberVsGep extends JFrame{
 			List<String> tmp = new ArrayList<String>();
 			tmp=lehetsegesLepesek;
 			
-			//System.out.println("FEHÉR_COMPUTER_LÉP");
-			
 			for (TreeNode gyerek : Gyerekek){                   		//végigmegyek a gyerekeken            		
 				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
 					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
-						//TESZT
-						//System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMIN: " + TempMin);
 						if (gyerek.getWinRate()>0.5){
 							for (int j=0; j<lehetsegesLepesek.size(); j++){
 								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
@@ -365,10 +391,8 @@ public class UjjatekEmberVsGep extends JFrame{
 		int y;
 		
 		if (Gyerekek.length==0){                               //ha nincs gyereke akkor mindegyik WinRate 0.5 tehát mehet a random
-			System.out.println("Nincs még gyereke");
 			Random rand = new Random(); 
 			int randomValue = rand.nextInt(lehetsegesLepesek.size());                //veszek egy random számot
-			System.out.println("RANDOM: "+randomValue);
 			
 			x=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(0)));
 			y=Character.getNumericValue((lehetsegesLepesek.get(randomValue).charAt(1)));
@@ -379,13 +403,10 @@ public class UjjatekEmberVsGep extends JFrame{
 			List<String> tmp = new ArrayList<String>();
 			tmp=lehetsegesLepesek;
 			
-			//System.out.println("TESZT-FEKETE_COMPUTER_LÉP");
-			
 			for (TreeNode gyerek : Gyerekek){                   		//végigmegyek a gyerekeken            		
 				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
 					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
-						//TESZT
-						System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMax);
+						//System.out.println("Pozíció: " + gyerek.getPosition() +" Winrate: " + gyerek.getWinRate() );
 						if (gyerek.getWinRate()<0.5){
 							for (int j=0; j<lehetsegesLepesek.size(); j++){
 								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
@@ -393,7 +414,7 @@ public class UjjatekEmberVsGep extends JFrame{
 								}
 							}
 						}
-						else if (gyerek.getWinRate()>TempMax){				//ha benne van, akkor maxkeresés a WinRate-re
+						else if (gyerek.getWinRate()>=TempMax){				//ha benne van, akkor maxkeresés a WinRate-re
 							TempMax=gyerek.getWinRate();
 							TempPosIndex=i;
 						}
@@ -421,14 +442,15 @@ public class UjjatekEmberVsGep extends JFrame{
 		}
 		String part1=Integer.toString(x);
 		String part2=Integer.toString(y);
-		System.out.println("Választott lépés: " + part1+part2);
+		//System.out.println("Választott lépés: " + part1+part2);
 		return part1+part2;
 	}
 	
-	public UjjatekEmberVsGep(){
+	public UjjatekEmberVsGep(int param){
 	//Frame konstruktor. A frame mérete 1280x720, neve "Uj_jatek".
 		super("Uj_jatek");
 		korszamlalo=0;
+		jatekos=param;
 		this.setSize(1280, 720);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -541,25 +563,6 @@ public class UjjatekEmberVsGep extends JFrame{
 		   Root=serTreeNode;
 		   elozoElement=Root;
 		   System.out.println("Sikerült az adatbázis betöltése");		   
-		   
-		   //Tesztelgetéshez..  
-//			TreeNode[] TestRoot=Root.getChildren();
-//			TreeNode[] TestElsoGyerekGyereke=Root.getChildren()[1].getChildren();
-//			TreeNode asd=TestElsoGyerekGyereke[0];
-//			TreeNode[] wtf=asd.getChildren();
-//			
-//			System.out.println("Tesztelési célokra:\nRoot Gyerekei:");
-//			for (int i=0;i<TestRoot.length;i++){
-//				System.out.println(TestRoot[i].getPosition() + " Winrate: " + TestRoot[i].getWinRate());
-//			}
-//			System.out.println("Most épp a Root 2 gyerekének gyerekei:");
-//			for (int i=0;i<TestElsoGyerekGyereke.length;i++){
-//				System.out.println(TestElsoGyerekGyereke[i].getPosition());
-//			}
-//			System.out.println("Most épp a Root 2 gyerekének az elsõ gyerekének a gyerekei:");
-//			for (int i=0;i<wtf.length;i++){
-//				System.out.println(wtf[i].getPosition());
-//			}
 			
 	    }catch(IOException i)
 	    {
@@ -571,8 +574,10 @@ public class UjjatekEmberVsGep extends JFrame{
 	       c.printStackTrace();
 	    }
 		
-
-		
+	    
+	    if (jatekos==1){
+	    	feketeComputer();
+	    }
 	}
 	
 

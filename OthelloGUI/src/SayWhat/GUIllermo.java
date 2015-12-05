@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -21,6 +22,9 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 	private JButton newGameComputerVSComputer = new JButton("Gép a gép ellen");
 	private JButton exit = new JButton("Kilépés");
 	private JTextField howManyRounds = new JTextField();
+	private String[] colors = {"Fekete","Fehér"};
+	private JComboBox<Object> colorList = new JComboBox<Object>(colors);
+	private JLabel label = new JLabel("Játékos színe:");
 	
 	public  class BtnListener implements ActionListener{//buttonactionlistener, mindhárom gombra, stringet kap paraméterként, ezek alapján hívja a különbözõ frameket
 		
@@ -50,7 +54,12 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setContentPane(new JLabel(new ImageIcon(getClass().getResource("/gandalfthepug.jpg"))));
 		
+		colorList.setSelectedIndex(0);
+		colorList.setBounds(830, 270, 100, 25);
 		
+		label.setBounds(830, 240, 250, 25);
+		label.setForeground(Color.cyan);
+		label.setFont(new Font("Serif", Font.TRUETYPE_FONT, 20));
 		
 		newGame.setBounds(450, 100, 400, 100);
 		newGameHumanVSComputer.setBounds(450, 225, 400, 100);
@@ -82,6 +91,8 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 		this.add(newGameComputerVSComputer);
 		this.add(exit);
 		this.add(howManyRounds);
+		this.add(colorList);
+		this.add(label);
 		
 		
 		BtnListener neweVe = new BtnListener("emberVember");
@@ -117,7 +128,14 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 		}
 		
 		if(ide == "emberVgep")  {
-			eVg = new UjjatekEmberVsGep();
+			String value=colorList.getSelectedItem().toString();
+			
+			int jatekos=0;
+			if (value.equals("Fekete")){jatekos=0;}
+			else{jatekos=1;}
+			
+			System.out.println(jatekos);
+			eVg = new UjjatekEmberVsGep(jatekos);
 			this.setVisible(false);
 			eVg.setVisible(true);
 			
