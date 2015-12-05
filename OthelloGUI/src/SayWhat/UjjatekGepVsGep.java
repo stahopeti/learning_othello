@@ -18,20 +18,22 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
+
 
 public class UjjatekGepVsGep extends JFrame{
 
-	List<String> lepesSorozat=new ArrayList<String>();
-	TreeNode Root;
-	TreeNode elozoElement;
+	private List<String> lepesSorozat=new ArrayList<String>();
+	private TreeNode Root;
+	private TreeNode elozoElement;
 	int howManyGames;
 	boolean vege = false;
 	int skip=0;
 
 	private static final long serialVersionUID = 1L;
+	
 
+	private JTextField textFieldbe= new JTextField(5);
+	private JTextField textFieldki= new JTextField(5);
 
 	
 	//Asztal.
@@ -53,10 +55,13 @@ public class UjjatekGepVsGep extends JFrame{
 	
 	
 	
-	
+	private JButton startButton = new JButton("Start");
 	private JButton vissza = new JButton("Vissza");
 	
 	private JLabel rossz_lepes = new JLabel("");
+	
+	private JLabel jatekszam = new JLabel("Játékok száma:");
+	private JLabel jatekle = new JLabel("Lejátszott játékok száma:");
 	
 	
 	
@@ -349,19 +354,122 @@ public class UjjatekGepVsGep extends JFrame{
 		return part1+part2;
 	}
 	
-	public UjjatekGepVsGep(int param){
-		howManyGames = param;
-		System.out.println("Ennyi menetet kell lejátszanom: "+howManyGames);
-	//Frame konstruktor. A frame mérete 1280x720, neve "Uj_jatek".
-//		super("Uj_jatek");
+	public  class BtnListenerr implements ActionListener{
+		String hova;
+			public BtnListenerr(String param){	
+			hova = param;
+		}
+		@Override
+		public void actionPerformed(ActionEvent arg0) {		
+			hivoo(hova);
+			System.out.println("meghívtam: "+ hova);
+			
+		}
+	}
+	
+	public void hivoo(String ide){
+			if(ide.equals("start"))  {
+				String param = textFieldbe.getText();	
+				howManyGames = Integer.parseInt(param);
+				
+				System.out.println("Ennyi menetet kell lejátszanom: "+howManyGames);
+				
+				//Adatbázis betöltése
+				TreeNode serTreeNode = null;
+			    try
+			    {
+			       FileInputStream fileIn = new FileInputStream("Tree.dat");
+			       ObjectInputStream in = new ObjectInputStream(fileIn);
+			       serTreeNode = (TreeNode) in.readObject();
+			       in.close();
+			       fileIn.close();
+				   Root=serTreeNode;
+				   elozoElement=Root;
+				   System.out.println("Sikerült az adatbázis betöltése");		   		
+			    }catch(IOException e)
+			    {
+			       //e.printStackTrace();
+				   System.out.println("Nem sikerült az adatbázis betöltése");
+				   Root=new TreeNode("root");
+				   elozoElement=Root;
+				   
+			    }catch(ClassNotFoundException c)
+			    {
+			       System.out.println("Tree class not found");
+			       c.printStackTrace();
+			    }
+				
+				
+				for(int i=0;i<howManyGames;i++){	
+					try {
+						jatek();
+					} catch (NumberFormatException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println((i+1) + ". játék vége");
+					if (i%1000==0){
+						textFieldki.setText(Integer.toString(i));
+					}
+				}
+					
+				try{																		//szerializálom a Tree-t
+					FileOutputStream fileOut = new FileOutputStream("Tree.dat");
+					ObjectOutputStream out = new ObjectOutputStream(fileOut);
+					out.writeObject(Root);
+					out.close();
+					fileOut.close();
+					System.out.printf("Serialized data is saved in Tree.dat\n");
+				}catch(IOException i){
+					  i.printStackTrace();
+				}catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+			}
+
+			
+	}
+	
+	public UjjatekGepVsGep(){
+		super("Uj_jatek");					
+		
+		//Frame konstruktor. A frame mérete 1280x720, neve "Uj_jatek".
 		korszamlalo=0;
+		
+
 		this.setSize(1280, 720);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setContentPane(new JLabel(new ImageIcon((getClass().getResource("/gandalfthepug.jpg")))));
 		
-		//palya
-		vissza.setLocation(1130,670);
+		textFieldbe.setBounds(850,295,100,25);
+		this.add(textFieldbe);
+		
+		textFieldki.setBounds(850,365,100,25);
+		textFieldki.setEditable(false);
+		this.add(textFieldki);
+		
+		jatekszam.setBounds(500,275,300,50);
+		jatekszam.setFont(new Font("Serif", Font.TRUETYPE_FONT, 30));
+		jatekszam.setForeground(Color.cyan);
+		this.add(jatekszam);
+		
+		jatekle.setBounds(500,350,300,50);
+		jatekle.setFont(new Font("Serif", Font.TRUETYPE_FONT, 30));
+		jatekle.setForeground(Color.cyan);
+		this.add(jatekle);
+		
+		startButton.setLocation(500,200);
+		startButton.setSize(150,50);
+		BtnListenerr startGomb = new BtnListenerr("start");
+		startButton.addActionListener(startGomb);
+		startButton.setBorder(null);
+		startButton.setFont(new Font("Serif", Font.TRUETYPE_FONT, 50));
+		startButton.setForeground(Color.cyan);
+		startButton.setContentAreaFilled(false);
+		this.add(startButton);
+		
+		vissza.setLocation(1130,580);
 		vissza.setSize(150,50);
 		BtnListener visszaGomb = new BtnListener();
 		vissza.addActionListener(visszaGomb);
@@ -371,6 +479,7 @@ public class UjjatekGepVsGep extends JFrame{
 		vissza.setContentAreaFilled(false);
 		this.add(vissza);
 		
+		/*
 		fekete.setEnabled(false);
 		feher.setEnabled(false);
 		
@@ -445,80 +554,8 @@ public class UjjatekGepVsGep extends JFrame{
 		this.setResizable(false);
 		this.pack();
 		System.out.println("Játékhívás elõtt állunk");
-		
-		
-		//Adatbázis betöltése
-		TreeNode serTreeNode = null;
-	    try
-	    {
-	       FileInputStream fileIn = new FileInputStream("Tree.dat");
-	       ObjectInputStream in = new ObjectInputStream(fileIn);
-	       serTreeNode = (TreeNode) in.readObject();
-	       in.close();
-	       fileIn.close();
-		   Root=serTreeNode;
-		   elozoElement=Root;
-		   System.out.println("Sikerült az adatbázis betöltése");		   
-		   
-		   //Tesztelgetéshez..  
-//			TreeNode[] TestRoot=Root.getChildren();
-//			TreeNode[] TestElsoGyerekGyereke=Root.getChildren()[1].getChildren();
-//			TreeNode asd=TestElsoGyerekGyereke[0];
-//			TreeNode[] wtf=asd.getChildren();
-//			
-//			System.out.println("Tesztelési célokra:\nRoot Gyerekei:");
-//			for (int i=0;i<TestRoot.length;i++){
-//				System.out.println(TestRoot[i].getPosition() + " Winrate: " + TestRoot[i].getWinRate());
-//			}
-//			System.out.println("Most épp a Root 2 gyerekének gyerekei:");
-//			for (int i=0;i<TestElsoGyerekGyereke.length;i++){
-//				System.out.println(TestElsoGyerekGyereke[i].getPosition());
-//			}
-//			System.out.println("Most épp a Root 2 gyerekének az elsõ gyerekének a gyerekei:");
-//			for (int i=0;i<wtf.length;i++){
-//				System.out.println(wtf[i].getPosition());
-//			}
-			
-	    }catch(IOException e)
-	    {
-	       //e.printStackTrace();
-		   System.out.println("Nem sikerült az adatbázis betöltése");
-		   Root=new TreeNode("root");
-		   elozoElement=Root;
-		   
-	    }catch(ClassNotFoundException c)
-	    {
-	       System.out.println("Tree class not found");
-	       c.printStackTrace();
-	    }
-		
-		
-		try {
-			for(int i=0;i<howManyGames;i++){	
-				jatek();
-				System.out.println((i+1) + ". játék vége");
-			}
-			
-			try{																		//szerializálom a Tree-t
-				FileOutputStream fileOut = new FileOutputStream("Tree.dat");
-				ObjectOutputStream out = new ObjectOutputStream(fileOut);
-				out.writeObject(Root);
-				out.close();
-				fileOut.close();
-				System.out.printf("Serialized data is saved in Tree.dat\n");
-			}catch(IOException i){
-			    i.printStackTrace();
-			}
-		
-		
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
+		*/
+	
 	}
 	
 
@@ -582,7 +619,7 @@ public class UjjatekGepVsGep extends JFrame{
 	
 	public void update() throws IOException{
 		
-		
+		/*
 		
 		for(int i = 1; i<9;i++){//Végig iterál a pályán, frissíti a megjelenítést.
 			for(int j = 1;j<9;j++){
@@ -600,10 +637,13 @@ public class UjjatekGepVsGep extends JFrame{
 			
 			
 		}
+		
 		//"Név : pontszám" labelre
 		fkt.setText("Fekete Játékos: "+ gameh.hanySotet());
 		fhr.setText("Fehér Játékos: "+ gameh.hanyVilagos());
-		rossz_lepes.setText("");		
+		rossz_lepes.setText("");	
+		
+		*/
 		
 		if(gameh.hanyUres()==0 || gameh.hanySotet()==0 || gameh.hanyVilagos()==0){            //ha már nincs üres, vagy elfogyott az egyik játékos korongja
 											

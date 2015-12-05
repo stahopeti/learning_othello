@@ -63,7 +63,7 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 		
 		newGame.setBounds(450, 100, 400, 100);
 		newGameHumanVSComputer.setBounds(450, 225, 400, 100);
-		newGameComputerVSComputer.setBounds(450, 350, 400, 100); howManyRounds.setBounds(815,390,100,25);
+		newGameComputerVSComputer.setBounds(450, 350, 400, 100); 
 		exit.setBounds(550, 475, 200, 100);
 		
 		newGame.setBorder(null);
@@ -141,13 +141,9 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 			
 		}
 		
-		if(ide == "gepVgep")  {
+		if(ide == "gepVgep")  {					
 			
-			String textfield = howManyRounds.getText();
-			
-			int param = Integer.parseInt(textfield);
-			
-			gVg = new UjjatekGepVsGep(param);
+			gVg = new UjjatekGepVsGep();
 			this.setVisible(false);
 			gVg.setVisible(true);
 			
