@@ -115,12 +115,12 @@ public class UjjatekEmberVsGep extends JFrame{
 						}
 					}
 					
-				}			
-				if(korszamlalo%2==0){//Globális változó, ha páros, sotetLep, ha páratlan vilagosLep.
-					feketeComputer();
-				}
+				}	
 				if(korszamlalo%2==1){  //gépi játékos	
 					feherHuman(x,y);
+				}
+				if(korszamlalo%2==0){//Globális változó, ha páros, sotetLep, ha páratlan vilagosLep.
+					feketeComputer();
 				}
 				if(skip>2){
 					try {

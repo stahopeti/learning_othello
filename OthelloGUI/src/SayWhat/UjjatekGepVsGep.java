@@ -411,17 +411,26 @@ public class UjjatekGepVsGep extends JFrame{
 			    				textFieldki.setText(Integer.toString(j));
 			    			}
 			    		});
-			    		if (j%500==0){
+			    		if (j%1000==0){
 				    		try {
 				    			java.lang.Thread.sleep(1);
 				    		}
 				    		catch(Exception e) { }
 				    	}
 			    	}
+			    	if (j==howManyGames){
+			    		Treekiir();
+			    	}
 			    }
 		}).start();
-			    						
-		try{																		//szerializálom a Tree-t
+			    	
+	
+	}
+	
+	public void Treekiir(){
+		try{
+			System.out.printf("Megkezdtem az adatbázis fájlba írását\n");
+			//szerializálom a Tree-t
 			FileOutputStream fileOut = new FileOutputStream("Tree.dat");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(Root);
@@ -432,7 +441,7 @@ public class UjjatekGepVsGep extends JFrame{
 			i.printStackTrace();
 		}catch (NumberFormatException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 	
 	public UjjatekGepVsGep(){
@@ -822,7 +831,7 @@ public class UjjatekGepVsGep extends JFrame{
 			
 			if(korszamlalo%2==0 && !vege){ feketeComputer();}
 			else if(korszamlalo%2==1 && !vege){ feherComputer(); }
-			if (skip>2){vege=true;}
+			if (skip>=2){vege=true;}
 		}
 		//System.out.println("egy jatek vege");
 		korszamlalo = 0;
