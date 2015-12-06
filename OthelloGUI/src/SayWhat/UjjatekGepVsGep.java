@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 
 public class UjjatekGepVsGep extends JFrame{
@@ -28,6 +29,7 @@ public class UjjatekGepVsGep extends JFrame{
 	int howManyGames;
 	boolean vege = false;
 	int skip=0;
+	static int j;
 
 	private static final long serialVersionUID = 1L;
 	
@@ -42,20 +44,21 @@ public class UjjatekGepVsGep extends JFrame{
 	//Globális változók.
 	static int korszamlalo = 0; //Ezáltal döntjük el ki következik. 
 	private int feherSc =0, feketeSc =0; //Játékosok pontszámai.
-	TOPLIST lista = new TOPLIST(); //név_pontszám formátumban
+	//TOPLIST lista = new TOPLIST(); //név_pontszám formátumban
 	
 	//2dimenziós gombtömb.
-		JButton[][] tabla = new JButton[10][10];
+	//	JButton[][] tabla = new JButton[10][10];
 	 
 	//Játékosok nevei.
-	private JLabel fkt = new JLabel("Fekete Játékos: "+ gameh.hanySotet());
-	private JLabel fhr = new JLabel("Fehér Játékos: "+ gameh.hanyVilagos());
-	JTextField fekete = new JTextField("Fekete");
-	JTextField feher = new JTextField("Fehér");
+	//private JLabel fkt = new JLabel("Fekete Játékos: "+ gameh.hanySotet());
+	//private JLabel fhr = new JLabel("Fehér Játékos: "+ gameh.hanyVilagos());
+	//JTextField fekete = new JTextField("Fekete");
+	//JTextField feher = new JTextField("Fehér");
 	
 	
 	
 	private JButton startButton = new JButton("Start");
+	private JButton stopButton = new JButton("Befejez");
 	private JButton vissza = new JButton("Vissza");
 	
 	private JLabel rossz_lepes = new JLabel("");
@@ -68,15 +71,17 @@ public class UjjatekGepVsGep extends JFrame{
 	
 	
 	public  class BtnListener implements ActionListener{//"Vissza" gomb listenerje, gombra kattintva visszalépünk a fõmenübe.
-		
-		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			vissza();
-			
+			vissza();	
 		}
-		
-		
+	}
+	
+	public  class BtnStopListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			j=howManyGames-1;	
+		}
 	}
 
 	
@@ -354,80 +359,80 @@ public class UjjatekGepVsGep extends JFrame{
 		return part1+part2;
 	}
 	
-	public  class BtnListenerr implements ActionListener{
-		String hova;
-			public BtnListenerr(String param){	
-			hova = param;
-		}
+	public  class BtnStartListener implements ActionListener{
+
 		@Override
 		public void actionPerformed(ActionEvent arg0) {		
-			hivoo(hova);
-			System.out.println("meghívtam: "+ hova);
+			start();
 			
 		}
 	}
 	
-	public void hivoo(String ide){
-			if(ide.equals("start"))  {
-				String param = textFieldbe.getText();	
-				howManyGames = Integer.parseInt(param);
+	public void start(){
+		String param = textFieldbe.getText();	
+		howManyGames = Integer.parseInt(param);
 				
-				System.out.println("Ennyi menetet kell lejátszanom: "+howManyGames);
+		System.out.println("Ennyi menetet kell lejátszanom: "+howManyGames);
 				
-				//Adatbázis betöltése
-				TreeNode serTreeNode = null;
-			    try
-			    {
-			       FileInputStream fileIn = new FileInputStream("Tree.dat");
-			       ObjectInputStream in = new ObjectInputStream(fileIn);
-			       serTreeNode = (TreeNode) in.readObject();
-			       in.close();
-			       fileIn.close();
-				   Root=serTreeNode;
-				   elozoElement=Root;
-				   System.out.println("Sikerült az adatbázis betöltése");		   		
-			    }catch(IOException e)
-			    {
-			       //e.printStackTrace();
-				   System.out.println("Nem sikerült az adatbázis betöltése");
-				   Root=new TreeNode("root");
-				   elozoElement=Root;
+		//Adatbázis betöltése
+		TreeNode serTreeNode = null;
+		try{
+			FileInputStream fileIn = new FileInputStream("Tree.dat");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			serTreeNode = (TreeNode) in.readObject();
+			in.close();
+			fileIn.close();
+			Root=serTreeNode;
+			elozoElement=Root;
+			System.out.println("Sikerült az adatbázis betöltése");		   		
+		}catch(IOException e){
+			//e.printStackTrace();
+			System.out.println("Nem sikerült az adatbázis betöltése");
+			Root=new TreeNode("root");
+			elozoElement=Root;
 				   
-			    }catch(ClassNotFoundException c)
-			    {
-			       System.out.println("Tree class not found");
-			       c.printStackTrace();
+		}catch(ClassNotFoundException c){
+			System.out.println("Tree class not found");
+			c.printStackTrace();
+		}
+		new Thread(new Runnable() {
+			  public void run() {
+			    	for (j = 0; j < howManyGames; j++) {
+			    		try {
+							jatek();
+							System.out.println((j+1) + ". játék vége");
+						} catch (NumberFormatException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+			    		// Runs inside of the Swing UI thread
+			    		SwingUtilities.invokeLater(new Runnable() {
+			    			public void run() {
+			    				textFieldki.setText(Integer.toString(j));
+			    			}
+			    		});
+			    		if (j%500==0){
+				    		try {
+				    			java.lang.Thread.sleep(1);
+				    		}
+				    		catch(Exception e) { }
+				    	}
+			    	}
 			    }
-				
-				
-				for(int i=0;i<howManyGames;i++){	
-					try {
-						jatek();
-					} catch (NumberFormatException | IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					System.out.println((i+1) + ". játék vége");
-					if (i%1000==0){
-						textFieldki.setText(Integer.toString(i));
-					}
-				}
-					
-				try{																		//szerializálom a Tree-t
-					FileOutputStream fileOut = new FileOutputStream("Tree.dat");
-					ObjectOutputStream out = new ObjectOutputStream(fileOut);
-					out.writeObject(Root);
-					out.close();
-					fileOut.close();
-					System.out.printf("Serialized data is saved in Tree.dat\n");
-				}catch(IOException i){
-					  i.printStackTrace();
-				}catch (NumberFormatException e) {
-					e.printStackTrace();
-				}
-			}
-
-			
+		}).start();
+			    						
+		try{																		//szerializálom a Tree-t
+			FileOutputStream fileOut = new FileOutputStream("Tree.dat");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(Root);
+			out.close();
+			fileOut.close();
+			System.out.printf("Serialized data is saved in Tree.dat\n");
+		}catch(IOException i){
+			i.printStackTrace();
+		}catch (NumberFormatException e) {
+			e.printStackTrace();
+		}		
 	}
 	
 	public UjjatekGepVsGep(){
@@ -461,13 +466,23 @@ public class UjjatekGepVsGep extends JFrame{
 		
 		startButton.setLocation(500,200);
 		startButton.setSize(150,50);
-		BtnListenerr startGomb = new BtnListenerr("start");
+		BtnStartListener startGomb = new BtnStartListener();
 		startButton.addActionListener(startGomb);
-		startButton.setBorder(null);
+		//startButton.setBorder(null);
 		startButton.setFont(new Font("Serif", Font.TRUETYPE_FONT, 50));
 		startButton.setForeground(Color.cyan);
 		startButton.setContentAreaFilled(false);
 		this.add(startButton);
+		
+		stopButton.setLocation(825,200);
+		stopButton.setSize(250,65);
+		BtnStopListener stopGomb = new BtnStopListener();
+		stopButton.addActionListener(stopGomb);
+		//stopButton.setBorder(null);
+		stopButton.setFont(new Font("Serif", Font.TRUETYPE_FONT, 50));
+		stopButton.setForeground(Color.cyan);
+		stopButton.setContentAreaFilled(false);
+		this.add(stopButton);
 		
 		vissza.setLocation(1130,580);
 		vissza.setSize(150,50);
@@ -651,12 +666,12 @@ public class UjjatekGepVsGep extends JFrame{
 			//int allas = 0; // ha fekete nyert 0 ha fehér 1 ha döntetlen 2
 				
 			//pontszám beállítása
-			feherSc = gameh.hanyVilagos();
-			feketeSc = gameh.hanySotet();
+			//feherSc = gameh.hanyVilagos();
+			//feketeSc = gameh.hanySotet();
 				
-			String nyertes = "Döntetlen";
+			//String nyertes = "Döntetlen";
 				
-			System.out.println("A játéknak vége!");
+			//System.out.println("A játéknak vége!");
 			//System.out.println("A játék végén: Lépések sorozata:");
 			//for (int i=0;i<lepesSorozat.size();i++){
 			//	System.out.println(lepesSorozat.get(i));
@@ -665,10 +680,10 @@ public class UjjatekGepVsGep extends JFrame{
 			
 			if(feketeSc > feherSc) {//Ha sötétnek több pontja van.
 				
-				rossz_lepes.setText(fekete.getText()+ " nyert!"); 
+				//rossz_lepes.setText(fekete.getText()+ " nyert!"); 
 				//allas = 0;
-				nyertes = fekete.getText();
-				System.out.println("FEKETE NYERT: " + nyertes);
+				//nyertes = fekete.getText();
+				//System.out.println("FEKETE NYERT: " + nyertes);
 				
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
@@ -682,10 +697,10 @@ public class UjjatekGepVsGep extends JFrame{
 				
 			}
 			if(feketeSc < feherSc) {//Ha világosnak több pontja van.
-				rossz_lepes.setText(feher.getText()+ " nyert!");
+				//rossz_lepes.setText(feher.getText()+ " nyert!");
 				//allas = 1;
-				nyertes = feher.getText();
-				System.out.println("FEHÉR NYERT: " + nyertes);
+				//nyertes = feher.getText();
+				//System.out.println("FEHÉR NYERT: " + nyertes);
 				
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
@@ -697,12 +712,12 @@ public class UjjatekGepVsGep extends JFrame{
 				
 			}
 			if(feherSc==feketeSc) {
-				rossz_lepes.setText("Döntetlen!");
+				//rossz_lepes.setText("Döntetlen!");
 				//allas = 2; 
-				System.out.println("DÖNTETLEN");
+				//System.out.println("DÖNTETLEN");
 				}//Ha egyenlõ az állás
 			
-			System.out.println("fekete: "  + feketeSc + "feher: "+ feherSc);//teszt kimenet konzolra
+			//System.out.println("fekete: "  + feketeSc + "feher: "+ feherSc);//teszt kimenet konzolra
 			    
 			/*
 						
@@ -797,6 +812,7 @@ public class UjjatekGepVsGep extends JFrame{
 		visszamegyek.setVisible(true);
 		this.setVisible(false);
 		this.dispose();
+		j=howManyGames-1;
 		
 	}
 	
@@ -808,7 +824,7 @@ public class UjjatekGepVsGep extends JFrame{
 			else if(korszamlalo%2==1 && !vege){ feherComputer(); }
 			if (skip>2){vege=true;}
 		}
-		System.out.println("egy jatek vege");
+		//System.out.println("egy jatek vege");
 		korszamlalo = 0;
 		gameh = new Asztal();
 		vege = false;
