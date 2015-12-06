@@ -255,8 +255,8 @@ public class UjjatekGepVsGep extends JFrame{
 						//TESZT
 						//System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMIN: " + TempMin);
 						if (gyerek.getWinRate()>0.5){
-							for (int j=0; j<lehetsegesLepesek.size(); j++){
-								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
+							for (int j=0; j<tmp.size(); j++){
+								if (gyerek.getPosition().equals(tmp.get(j))){
 									tmp.remove(j);				//kiveszem a listából
 								}
 							}
@@ -321,8 +321,8 @@ public class UjjatekGepVsGep extends JFrame{
 						//TESZT
 						//System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMAX: " + TempMax);
 						if (gyerek.getWinRate()<0.5){
-							for (int j=0; j<lehetsegesLepesek.size(); j++){
-								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
+							for (int j=0; j<tmp.size(); j++){
+								if (gyerek.getPosition().equals(tmp.get(j))){
 									tmp.remove(j);				//kiveszem a listából
 								}
 							}
@@ -388,7 +388,7 @@ public class UjjatekGepVsGep extends JFrame{
 		}catch(IOException e){
 			//e.printStackTrace();
 			System.out.println("Nem sikerült az adatbázis betöltése");
-			Root=new TreeNode("root");
+			Root=new TreeNode("00");
 			elozoElement=Root;
 				   
 		}catch(ClassNotFoundException c){
@@ -419,6 +419,7 @@ public class UjjatekGepVsGep extends JFrame{
 				    	}
 			    	}
 			    	if (j==howManyGames){
+			    		textFieldki.setText(Integer.toString(howManyGames));
 			    		Treekiir();
 			    	}
 			    }
@@ -697,7 +698,7 @@ public class UjjatekGepVsGep extends JFrame{
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incWinCount();
-					elozoElement.setWinRate();
+					//elozoElement.setWinRate();
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 					
@@ -714,7 +715,7 @@ public class UjjatekGepVsGep extends JFrame{
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incLoseCount();
-					elozoElement.setWinRate();
+					//elozoElement.setWinRate();
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 				}

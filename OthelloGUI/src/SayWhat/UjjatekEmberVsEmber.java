@@ -23,7 +23,7 @@ import javax.swing.border.LineBorder;
 public class UjjatekEmberVsEmber extends JFrame{
 
 	List<String> lepesSorozat=new ArrayList<String>();
-	TreeNode Root=new TreeNode("root");
+	TreeNode Root=new TreeNode("00");
 	TreeNode elozoElement=Root;
 	int skip=0;
 
@@ -473,7 +473,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incWinCount();
-					elozoElement.setWinRate();
+					//elozoElement.setWinRate();
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 					
@@ -489,7 +489,7 @@ public class UjjatekEmberVsEmber extends JFrame{
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incLoseCount();
-					elozoElement.setWinRate();
+					//elozoElement.setWinRate();
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 				}

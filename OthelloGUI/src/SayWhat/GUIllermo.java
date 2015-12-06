@@ -55,9 +55,9 @@ public class GUIllermo extends JFrame {//fõmenü frameje
 		this.setContentPane(new JLabel(new ImageIcon(getClass().getResource("/gandalfthepug.jpg"))));
 		
 		colorList.setSelectedIndex(0);
-		colorList.setBounds(830, 270, 100, 25);
+		colorList.setBounds(860, 270, 100, 25);
 		
-		label.setBounds(830, 240, 250, 25);
+		label.setBounds(860, 240, 250, 25);
 		label.setForeground(Color.cyan);
 		label.setFont(new Font("Serif", Font.TRUETYPE_FONT, 20));
 		

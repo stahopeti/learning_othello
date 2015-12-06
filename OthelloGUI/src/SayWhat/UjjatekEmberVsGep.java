@@ -24,7 +24,7 @@ import javax.swing.border.LineBorder;
 public class UjjatekEmberVsGep extends JFrame{
 
 	List<String> lepesSorozat=new ArrayList<String>();
-	TreeNode Root=new TreeNode("root");
+	TreeNode Root=new TreeNode("00");
 	TreeNode elozoElement=Root;
 	int skip=0;
 	int jatekos;
@@ -45,8 +45,8 @@ public class UjjatekEmberVsGep extends JFrame{
 	//Játékosok nevei.
 	private JLabel fkt = new JLabel("Fekete Játékos: "+ gameh.hanySotet());
 	private JLabel fhr = new JLabel("Fehér Játékos: "+ gameh.hanyVilagos());
-	JTextField fekete = new JTextField();
-	JTextField feher = new JTextField();
+	JTextField fekete = new JTextField("Player 1");
+	JTextField feher = new JTextField("Player 2");
 	
 	
 	
@@ -346,9 +346,10 @@ public class UjjatekEmberVsGep extends JFrame{
 			for (TreeNode gyerek : Gyerekek){                   		//végigmegyek a gyerekeken            		
 				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
 					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
+						System.out.println("Pozíció: " + gyerek.getPosition() +" Winrate: " + gyerek.getWinRate() );
 						if (gyerek.getWinRate()>0.5){
-							for (int j=0; j<lehetsegesLepesek.size(); j++){
-								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
+							for (int j=0; j<tmp.size(); j++){
+								if (gyerek.getPosition().equals(tmp.get(j))){
 									tmp.remove(j);				//kiveszem a listából
 								}
 							}
@@ -391,6 +392,7 @@ public class UjjatekEmberVsGep extends JFrame{
 		int y;
 		
 		if (Gyerekek.length==0){                               //ha nincs gyereke akkor mindegyik WinRate 0.5 tehát mehet a random
+			System.out.println("Nincs gyereke");
 			Random rand = new Random(); 
 			int randomValue = rand.nextInt(lehetsegesLepesek.size());                //veszek egy random számot
 			
@@ -406,10 +408,10 @@ public class UjjatekEmberVsGep extends JFrame{
 			for (TreeNode gyerek : Gyerekek){                   		//végigmegyek a gyerekeken            		
 				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
 					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
-						//System.out.println("Pozíció: " + gyerek.getPosition() +" Winrate: " + gyerek.getWinRate() );
+						System.out.println("Pozíció: " + gyerek.getPosition() +" Winrate: " + gyerek.getWinRate() );
 						if (gyerek.getWinRate()<0.5){
-							for (int j=0; j<lehetsegesLepesek.size(); j++){
-								if (gyerek.getPosition()==lehetsegesLepesek.get(i)){
+							for (int j=0; j<tmp.size(); j++){
+								if (gyerek.getPosition().equals(tmp.get(j))){
 									tmp.remove(j);				//kiveszem a listából
 								}
 							}
@@ -696,7 +698,7 @@ public class UjjatekEmberVsGep extends JFrame{
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incWinCount();
-					elozoElement.setWinRate();
+					//elozoElement.setWinRate();
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 					
@@ -713,7 +715,7 @@ public class UjjatekEmberVsGep extends JFrame{
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incLoseCount();
-					elozoElement.setWinRate();
+					//elozoElement.setWinRate();
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 				}
