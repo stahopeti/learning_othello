@@ -698,7 +698,7 @@ public class UjjatekEmberVsGep extends JFrame{
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incWinCount();
-					//elozoElement.setWinRate();
+					elozoElement.setWinRate();
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 					
@@ -715,7 +715,7 @@ public class UjjatekEmberVsGep extends JFrame{
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incLoseCount();
-					//elozoElement.setWinRate();
+					elozoElement.setWinRate();
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 				}

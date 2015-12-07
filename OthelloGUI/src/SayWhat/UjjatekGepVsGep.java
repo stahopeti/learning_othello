@@ -61,11 +61,9 @@ public class UjjatekGepVsGep extends JFrame{
 	private JButton stopButton = new JButton("Befejez");
 	private JButton vissza = new JButton("Vissza");
 	
-	private JLabel rossz_lepes = new JLabel("");
-	
 	private JLabel jatekszam = new JLabel("Játékok száma:");
 	private JLabel jatekle = new JLabel("Lejátszott játékok száma:");
-	
+	private JLabel allapot = new JLabel("");
 	
 	
 	
@@ -172,7 +170,7 @@ public class UjjatekGepVsGep extends JFrame{
 			}
 			//System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
 			if(lepett_e==0) {
-				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
+				//rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
 			}				
 			
 			//System.out.println("Lépések sorozata:");
@@ -220,7 +218,7 @@ public class UjjatekGepVsGep extends JFrame{
 	
 			//System.out.println("lepes: " + korszamlalo%2 + " lepett_e: " + lepett_e);//teszt kimenet a konzolra
 			if(lepett_e==0) {
-				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 							
+				//rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 							
 						
 				//System.out.println("\nüresek száma: " +gameh.hanyUres()+ "\n");//teszt kimenet a konzolra
 			}
@@ -244,8 +242,7 @@ public class UjjatekGepVsGep extends JFrame{
 		else{
 			double TempMin=1.0;
 			int TempPosIndex=0;
-			List<String> tmp = new ArrayList<String>();
-			tmp=lehetsegesLepesek;
+			List<String> tmp = new ArrayList<String>(lehetsegesLepesek);
 			
 			//System.out.println("FEHÉR_COMPUTER_LÉP");
 			
@@ -253,7 +250,7 @@ public class UjjatekGepVsGep extends JFrame{
 				for (int i=0;i<lehetsegesLepesek.size();i++){    		//végigmegyek a lehetséges lépések listán, megnézem, hogy benne van-e (lehet h fölösleges egyébként)
 					if (gyerek.getPosition().equals(lehetsegesLepesek.get(i))){    
 						//TESZT
-						//System.out.println("Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMIN: " + TempMin);
+						//System.out.println("Index: "+ i + "Current Gyerek: " + gyerek.getPosition() + " WinRateje: " + gyerek.getWinRate() + " KorábbiMIN: " + TempMin);
 						if (gyerek.getWinRate()>0.5){
 							for (int j=0; j<tmp.size(); j++){
 								if (gyerek.getPosition().equals(tmp.get(j))){
@@ -310,8 +307,7 @@ public class UjjatekGepVsGep extends JFrame{
 		else{
 			double TempMax=0.0;
 			int TempPosIndex=0;
-			List<String> tmp = new ArrayList<String>();
-			tmp=lehetsegesLepesek;
+			List<String> tmp = new ArrayList<String>(lehetsegesLepesek);
 			
 			//System.out.println("FEKETE_COMPUTER_LÉP");
 			
@@ -362,7 +358,7 @@ public class UjjatekGepVsGep extends JFrame{
 	public  class BtnStartListener implements ActionListener{
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {		
+		public void actionPerformed(ActionEvent arg0) {			
 			start();
 			
 		}
@@ -373,10 +369,12 @@ public class UjjatekGepVsGep extends JFrame{
 		howManyGames = Integer.parseInt(param);
 				
 		System.out.println("Ennyi menetet kell lejátszanom: "+howManyGames);
-				
+		
+		
 		//Adatbázis betöltése
 		TreeNode serTreeNode = null;
 		try{
+
 			FileInputStream fileIn = new FileInputStream("Tree.dat");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			serTreeNode = (TreeNode) in.readObject();
@@ -384,10 +382,12 @@ public class UjjatekGepVsGep extends JFrame{
 			fileIn.close();
 			Root=serTreeNode;
 			elozoElement=Root;
+			allapot.setText("Sikerült az adatbázis betöltése");
 			System.out.println("Sikerült az adatbázis betöltése");		   		
 		}catch(IOException e){
 			//e.printStackTrace();
 			System.out.println("Nem sikerült az adatbázis betöltése");
+			allapot.setText("Nem sikerült az adatbázis betöltése");
 			Root=new TreeNode("00");
 			elozoElement=Root;
 				   
@@ -395,12 +395,15 @@ public class UjjatekGepVsGep extends JFrame{
 			System.out.println("Tree class not found");
 			c.printStackTrace();
 		}
+		
 		new Thread(new Runnable() {
+
 			  public void run() {
+				  	allapot.setText("Játékok futása folyamatban");
 			    	for (j = 0; j < howManyGames; j++) {
 			    		try {
 							jatek();
-							System.out.println((j+1) + ". játék vége");
+							//System.out.println((j+1) + ". játék vége");
 						} catch (NumberFormatException | IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -413,7 +416,7 @@ public class UjjatekGepVsGep extends JFrame{
 			    		});
 			    		if (j%1000==0){
 				    		try {
-				    			java.lang.Thread.sleep(1);
+				    			java.lang.Thread.sleep(5);
 				    		}
 				    		catch(Exception e) { }
 				    	}
@@ -431,6 +434,7 @@ public class UjjatekGepVsGep extends JFrame{
 	public void Treekiir(){
 		try{
 			System.out.printf("Megkezdtem az adatbázis fájlba írását\n");
+			allapot.setText("Megkezdtem az adatbázis fájlba írását");
 			//szerializálom a Tree-t
 			FileOutputStream fileOut = new FileOutputStream("Tree.dat");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -438,6 +442,7 @@ public class UjjatekGepVsGep extends JFrame{
 			out.close();
 			fileOut.close();
 			System.out.printf("Serialized data is saved in Tree.dat\n");
+			allapot.setText("Adatbázis fájlba írása sikeresen megtörtént!");
 		}catch(IOException i){
 			i.printStackTrace();
 		}catch (NumberFormatException e) {
@@ -473,6 +478,11 @@ public class UjjatekGepVsGep extends JFrame{
 		jatekle.setFont(new Font("Serif", Font.TRUETYPE_FONT, 30));
 		jatekle.setForeground(Color.cyan);
 		this.add(jatekle);
+		
+		allapot.setBounds(300,450,900,50);
+		allapot.setFont(new Font("Serif", Font.TRUETYPE_FONT, 35));
+		allapot.setForeground(Color.cyan);
+		this.add(allapot);
 		
 		startButton.setLocation(500,200);
 		startButton.setSize(150,50);
@@ -644,6 +654,7 @@ public class UjjatekGepVsGep extends JFrame{
 	
 	public void update() throws IOException{
 		
+		
 		/*
 		
 		for(int i = 1; i<9;i++){//Végig iterál a pályán, frissíti a megjelenítést.
@@ -676,8 +687,8 @@ public class UjjatekGepVsGep extends JFrame{
 			//int allas = 0; // ha fekete nyert 0 ha fehér 1 ha döntetlen 2
 				
 			//pontszám beállítása
-			//feherSc = gameh.hanyVilagos();
-			//feketeSc = gameh.hanySotet();
+			feherSc = gameh.hanyVilagos();
+			feketeSc = gameh.hanySotet();
 				
 			//String nyertes = "Döntetlen";
 				
@@ -693,12 +704,12 @@ public class UjjatekGepVsGep extends JFrame{
 				//rossz_lepes.setText(fekete.getText()+ " nyert!"); 
 				//allas = 0;
 				//nyertes = fekete.getText();
-				//System.out.println("FEKETE NYERT: " + nyertes);
+				//System.out.println("FEKETE NYERT: ");
 				
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incWinCount();
-					//elozoElement.setWinRate();
+					elozoElement.setWinRate();
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 					
@@ -710,12 +721,12 @@ public class UjjatekGepVsGep extends JFrame{
 				//rossz_lepes.setText(feher.getText()+ " nyert!");
 				//allas = 1;
 				//nyertes = feher.getText();
-				//System.out.println("FEHÉR NYERT: " + nyertes);
+				//System.out.println("FEHÉR NYERT: ");
 				
 				for (int i=0;i<lepesSorozat.size();i++){
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement.incLoseCount();
-					//elozoElement.setWinRate();
+					elozoElement.setWinRate();
 					//System.out.println(elozoElement.getPosition() + " Winrate: " + elozoElement.getWinRate());
 					elozoElement=elozoElement.getParent();
 				}
@@ -725,7 +736,7 @@ public class UjjatekGepVsGep extends JFrame{
 				//rossz_lepes.setText("Döntetlen!");
 				//allas = 2; 
 				//System.out.println("DÖNTETLEN");
-				}//Ha egyenlõ az állás
+			}//Ha egyenlõ az állás
 			
 			//System.out.println("fekete: "  + feketeSc + "feher: "+ feherSc);//teszt kimenet konzolra
 			    
@@ -828,13 +839,13 @@ public class UjjatekGepVsGep extends JFrame{
 	
 	public void jatek() throws NumberFormatException, IOException{
 		
+		//System.out.println("Elkezdödött az új game");
 		while(!vege){
 			
 			if(korszamlalo%2==0 && !vege){ feketeComputer();}
 			else if(korszamlalo%2==1 && !vege){ feherComputer(); }
 			if (skip>=2){vege=true;}
 		}
-		//System.out.println("egy jatek vege");
 		korszamlalo = 0;
 		gameh = new Asztal();
 		vege = false;
@@ -842,7 +853,8 @@ public class UjjatekGepVsGep extends JFrame{
 		feketeSc=0;
 
 		lepesSorozat=new ArrayList<String>();
-		elozoElement=Root;
+		elozoElement=Root;	
+		//System.out.println("egy jatek vege");
 	}
 	
 }
