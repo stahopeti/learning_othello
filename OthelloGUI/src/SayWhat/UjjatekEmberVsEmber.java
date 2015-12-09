@@ -26,6 +26,9 @@ public class UjjatekEmberVsEmber extends JFrame{
 	TreeNode Root=new TreeNode("00");
 	TreeNode elozoElement=Root;
 	int skip=0;
+	
+	boolean tukorvizsgalat=true;
+	int transzform=0;
 
 	
 	private static final long serialVersionUID = 1L;
@@ -162,6 +165,16 @@ public class UjjatekEmberVsEmber extends JFrame{
 			if (lehetsegesLepesek.size()==0){korszamlalo++; skip++;}	 //ha nincs hova lépni, akkor passzolni kell
 			else{
 				skip=0;
+				if (tukorvizsgalat){
+					if (x==6 && y==5){
+						transzform=1;
+						tukorvizsgalat=false;
+					}
+					else{tukorvizsgalat=false;}
+				}
+				
+				x=transzformal(x);
+				y=transzformal(y);
 				lepett_e = gameh.sotetForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 				if (lepett_e>0){
 					fabaSzur(x,y);
@@ -188,6 +201,9 @@ public class UjjatekEmberVsEmber extends JFrame{
 		
 		if (lehetsegesLepesek.size()==0){korszamlalo++; skip++;}	 //ha nincs hova lépni, akkor passzolni kell
 		else{
+			
+			x=transzformal(x);
+			y=transzformal(y);
 			skip=0;
 			lepett_e = gameh.vilagosForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 			if (lepett_e>0){
@@ -419,7 +435,12 @@ public class UjjatekEmberVsEmber extends JFrame{
 		return null;
 	}
 	
-	
+	public int transzformal(int x){
+		if (transzform==1){
+			return 8-x+1;	
+		}
+		return x;
+	}	
 	
 	public void update() throws IOException{
 		
@@ -428,13 +449,13 @@ public class UjjatekEmberVsEmber extends JFrame{
 		for(int i = 1; i<9;i++){//Végig iterál a pályán, frissíti a megjelenítést.
 			for(int j = 1;j<9;j++){
 				if(gameh.palya[i][j].getSzin()=='-'){
-					tabla[i][j].setIcon(new ImageIcon(getClass().getResource("/nincs_korong.jpg")));
+					tabla[transzformal(i)][transzformal(j)].setIcon(new ImageIcon(getClass().getResource("/nincs_korong.jpg")));
 				}
 				if(gameh.palya[i][j].getSzin()=='X'){
-					tabla[i][j].setIcon(new ImageIcon(getClass().getResource("/fekete_korong.jpg")));
+					tabla[transzformal(i)][transzformal(j)].setIcon(new ImageIcon(getClass().getResource("/fekete_korong.jpg")));
 				}
 				if(gameh.palya[i][j].getSzin()=='O'){
-					tabla[i][j].setIcon(new ImageIcon(getClass().getResource("/feher_korong.jpg")));
+					tabla[transzformal(i)][transzformal(j)].setIcon(new ImageIcon(getClass().getResource("/feher_korong.jpg")));
 				}
 				
 			}

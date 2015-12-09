@@ -30,7 +30,9 @@ public class UjjatekGepVsGep extends JFrame{
 	boolean vege = false;
 	int skip=0;
 	static int j;
-
+	boolean tukorvizsgalat=true;
+	int transzform=0;
+	
 	private static final long serialVersionUID = 1L;
 	
 
@@ -135,6 +137,14 @@ public class UjjatekGepVsGep extends JFrame{
 		}	
 	}
 
+	public int transzformal(int x){
+		if (transzform==1){
+			return 8-x+1;	
+		}
+		return x;
+	}	
+
+	
 	public void feketeComputer(){				//fekete gépi játékos lépése 
 		List<String> lehetsegesLepesek = new ArrayList<String>();
 		lehetsegesLepesek=lehetsegesLepesLista();             //kigyûjtöm egy listába a lehetséges lépéseket
@@ -154,6 +164,17 @@ public class UjjatekGepVsGep extends JFrame{
 			String Lepes=feketeComputerLep(lehetsegesLepesek);    //kiszámolja, hogy hova kell lépnie
 			x=Character.getNumericValue(Lepes.charAt(0));
 			y=Character.getNumericValue(Lepes.charAt(1));
+			//if (korszamlalo==0){x=3;y=4;tukorvizsgalat=false;}
+			
+			if (tukorvizsgalat){
+				if (x==6 && y==5){
+					transzform=1;
+					tukorvizsgalat=false;
+					x=transzformal(x);
+					y=transzformal(y);
+				}
+				else{tukorvizsgalat=false;}
+			}
 															
 			lepett_e = gameh.sotetForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 			if (lepett_e>0){
