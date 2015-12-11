@@ -272,6 +272,9 @@ public class UjjatekEmberVsGep extends JFrame{
 				System.out.println("updateolva");//tesztkimenet konzolra
 				gameh.asztalKiir();
 			}
+			if(lepett_e==0) {
+				rossz_lepes.setText("Rossz Lépés!");    //ha nem volt írja ki, hogy "Rossz lépés!". 
+			}
 		}																							
 }
 	
