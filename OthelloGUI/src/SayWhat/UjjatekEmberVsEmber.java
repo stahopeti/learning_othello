@@ -170,11 +170,24 @@ public class UjjatekEmberVsEmber extends JFrame{
 						transzform=1;
 						tukorvizsgalat=false;
 					}
+					if (x==4 && y==3){
+						transzform=2;
+						tukorvizsgalat=false;
+					}
+					if (x==5 && y==6){
+						transzform=3;
+						tukorvizsgalat=false;
+					}
 					else{tukorvizsgalat=false;}
 				}
 				
 				x=transzformal(x);
 				y=transzformal(y);
+				if (transzform==2 || transzform==3){
+					int tmp=x;
+					x=y;
+					y=tmp;
+				}
 				lepett_e = gameh.sotetForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 				if (lepett_e>0){
 					fabaSzur(x,y);
@@ -204,6 +217,11 @@ public class UjjatekEmberVsEmber extends JFrame{
 			
 			x=transzformal(x);
 			y=transzformal(y);
+			if (transzform==2 || transzform==3){
+				int tmp=x;
+				x=y;
+				y=tmp;
+			}
 			skip=0;
 			lepett_e = gameh.vilagosForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 			if (lepett_e>0){
@@ -439,27 +457,51 @@ public class UjjatekEmberVsEmber extends JFrame{
 		if (transzform==1){
 			return 8-x+1;	
 		}
+		if (transzform==3){
+			return 8-x+1;	
+		}
 		return x;
 	}	
 	
 	public void update() throws IOException{
-		
-		
+		int tmp;
+		int x;
+		int y;
 		
 		for(int i = 1; i<9;i++){//Végig iterál a pályán, frissíti a megjelenítést.
 			for(int j = 1;j<9;j++){
 				if(gameh.palya[i][j].getSzin()=='-'){
-					tabla[transzformal(i)][transzformal(j)].setIcon(new ImageIcon(getClass().getResource("/nincs_korong.jpg")));
+					x=transzformal(i);
+					y=transzformal(j);
+					if (transzform==2 || transzform==3){
+						tmp=x;
+						x=y;
+						y=tmp;
+					}
+					tabla[x][y].setIcon(new ImageIcon(getClass().getResource("/nincs_korong.jpg")));
 				}
 				if(gameh.palya[i][j].getSzin()=='X'){
-					tabla[transzformal(i)][transzformal(j)].setIcon(new ImageIcon(getClass().getResource("/fekete_korong.jpg")));
+					x=transzformal(i);
+					y=transzformal(j);
+					if (transzform==2 || transzform==3){
+						tmp=x;
+						x=y;
+						y=tmp;
+					}
+					tabla[x][y].setIcon(new ImageIcon(getClass().getResource("/fekete_korong.jpg")));
 				}
 				if(gameh.palya[i][j].getSzin()=='O'){
-					tabla[transzformal(i)][transzformal(j)].setIcon(new ImageIcon(getClass().getResource("/feher_korong.jpg")));
+					x=transzformal(i);
+					y=transzformal(j);
+					if (transzform==2 || transzform==3){
+						tmp=x;
+						x=y;
+						y=tmp;
+					}
+					tabla[x][y].setIcon(new ImageIcon(getClass().getResource("/feher_korong.jpg")));
 				}
 				
 			}
-			
 			
 		}
 		//"Név : pontszám" labelre

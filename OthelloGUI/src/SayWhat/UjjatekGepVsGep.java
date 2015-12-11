@@ -164,8 +164,9 @@ public class UjjatekGepVsGep extends JFrame{
 			String Lepes=feketeComputerLep(lehetsegesLepesek);    //kiszámolja, hogy hova kell lépnie
 			x=Character.getNumericValue(Lepes.charAt(0));
 			y=Character.getNumericValue(Lepes.charAt(1));
-			//if (korszamlalo==0){x=3;y=4;tukorvizsgalat=false;}
+			if (korszamlalo==0){x=3;y=4;}
 			
+			/*
 			if (tukorvizsgalat){
 				if (x==6 && y==5){
 					transzform=1;
@@ -175,6 +176,7 @@ public class UjjatekGepVsGep extends JFrame{
 				}
 				else{tukorvizsgalat=false;}
 			}
+			*/
 															
 			lepett_e = gameh.sotetForgat(x,y,false);//A függvény visszatérési értéke egy int, ha ez nagyobb mint 0, volt megfelelõ lépés.
 			if (lepett_e>0){
